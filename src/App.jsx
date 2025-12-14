@@ -1,19 +1,58 @@
 // src/App.jsx
 
 import { useState } from 'react';
-import Navbar from './components/navbar'; 
-// Fixed Imports: Only import Routes and Route
-import { Routes, Route } from 'react-router-dom'; 
+// Import Layouts
+import PublicLayout from './layouts/PublicLayout';
+import DashboardLayout from './layouts/DashboardLayout';
+import { Routes, Route } from 'react-router-dom';
 
-// --- Placeholder Components for Routes ---
-const HomePage = () => <div className="p-8"><h1>Welcome Home!</h1><p>Tuition Management System Landing Page.</p></div>;
-const TuitionsPage = () => <div className="p-8"><h1>Tuitions Listings</h1></div>;
-const TutorsPage = () => <div className="p-8"><h1>Tutors Directory</h1></div>;
-const AboutPage = () => <div className="p-8"><h1>About Us</h1></div>;
-const ContactPage = () => <div className="p-8"><h1>Contact Information</h1></div>;
-const LoginPage = () => <div className="p-8"><h1>Login</h1></div>;
-const RegisterPage = () => <div className="p-8"><h1>Register</h1></div>;
-const DashboardPage = () => <div className="p-8"><h1>User Dashboard</h1></div>;
+// Import Pages
+import DashboardPage from './pages/Dashboard'; 
+
+// --- Placeholder Components for Routes (using theme classes) ---
+const HomePage = () => (
+    <div className="p-8 max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Welcome Home!</h1>
+        <p className='theme-text-light'>Tuition Management System Landing Page.</p>
+    </div>
+);
+const TuitionsPage = () => (
+    <div className="p-8 max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Tuitions Listings</h1>
+        <p className='theme-text-light'>Browse available tuition posts here.</p>
+    </div>
+);
+const TutorsPage = () => (
+    <div className="p-8 max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Tutors Directory</h1>
+        <p className='theme-text-light'>Find qualified tutors near you.</p>
+    </div>
+);
+const AboutPage = () => (
+    <div className="p-8 max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4 theme-accent-text">About Us</h1>
+        <p className='theme-text-light'>Learn more about SikshaHub's mission.</p>
+    </div>
+);
+const ContactPage = () => (
+    <div className="p-8 max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Contact Information</h1>
+        <p className='theme-text-light'>Get in touch with our support team.</p>
+    </div>
+);
+const LoginPage = () => (
+    <div className="p-8 max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Login</h1>
+        <p className='theme-text-light'>Access your account.</p>
+    </div>
+);
+const RegisterPage = () => (
+    <div className="p-8 max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Register</h1>
+        <p className='theme-text-light'>Create a new account.</p>
+    </div>
+);
+
 const ProfilePage = () => <div className="p-8"><h1>User Profile</h1></div>;
 const SettingsPage = () => <div className="p-8"><h1>User Settings</h1></div>;
 // ------------------------------------------
@@ -22,27 +61,29 @@ function App() {
   const [user, setUser] = useState(null); 
 
   return (
-    <>
-      <Navbar /> 
+    <Routes>
       
-      <main className='min-h-screen'>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/tuitions" element={<TuitionsPage />} />
-          <Route path="/tutors" element={<TutorsPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+      {/* 1. PUBLIC ROUTES (Uses Navbar and Footer) */}
+      <Route path="/" element={<PublicLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="tuitions" element={<TuitionsPage />} />
+        <Route path="tutors" element={<TutorsPage />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="contact" element={<ContactPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+      </Route>
 
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-
-          <Route path="*" element={<div className="p-8"><h1>404 Not Found</h1></div>} />
-        </Routes>
-      </main>
-    </>
+      {/* 2. DASHBOARD ROUTES (Uses specialized layout, without Footer) */}
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<DashboardPage />} /> 
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="settings" element={<SettingsPage />} />
+      </Route>
+      
+      {/* Fallback 404 Route */}
+      <Route path="*" element={<div className="p-8 theme-bg-dark text-white min-h-screen"><h1>404 Not Found</h1></div>} />
+    </Routes>
   )
 }
 

@@ -1,2 +1,26 @@
+/* src/index.css */
+
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* --- SikshaHub Global Theme Classes --- */
+
+/* Primary dark background for Navbar/Footer */
+.theme-bg-dark {
+    @apply bg-gray-900;
+}
+
+/* Primary text color for accents/logos (Emerald) */
+.theme-accent-text {
+    @apply text-emerald-400;
+}
+
+/* Secondary accent text color (Gold/Yellow) */
+.theme-secondary-text {
+    @apply text-yellow-400;
+}
+
+/* General body text color for dark theme */
+.theme-text-light {
+    @apply text-gray-400;
+}

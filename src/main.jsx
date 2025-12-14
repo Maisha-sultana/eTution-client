@@ -9,8 +9,9 @@ import AuthProvider from './contexts/AuthContext.jsx' // New Import
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    {/* BrowserRouter enables routing */}
     <BrowserRouter>
-      {/* Wrap the App with AuthProvider */}
+      {/* AuthProvider makes user state available everywhere */}
       <AuthProvider>
         <App />
       </AuthProvider>
