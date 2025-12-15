@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext'; 
 
 // Branding
-const websiteName = "SikshaHub"; 
+const websiteName = "SikkhaHub"; 
 
 // Abstract, professional logo icon
 const AbstractIcon = () => (

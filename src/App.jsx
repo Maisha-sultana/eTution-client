@@ -8,6 +8,7 @@ import { Routes, Route } from 'react-router-dom';
 
 // Import Pages
 import DashboardPage from './pages/Dashboard'; 
+import RegisterPage from './pages/RegisterPage';
 
 // --- Placeholder Components for Routes (using theme classes) ---
 const HomePage = () => (
@@ -44,12 +45,6 @@ const LoginPage = () => (
     <div className="p-8 max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-4 theme-accent-text">Login</h1>
         <p className='theme-text-light'>Access your account.</p>
-    </div>
-);
-const RegisterPage = () => (
-    <div className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Register</h1>
-        <p className='theme-text-light'>Create a new account.</p>
     </div>
 );
 

@@ -2,24 +2,25 @@
 
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Navbar from '../components/navbar'; // We'll keep the Navbar for consistency
-// import DashboardSidebar from '../components/DashboardSidebar'; // Placeholder for future sidebar
+import Navbar from '../components/navbar'; 
+import Footer from '../components/Footer'; // Import is correct
 
 const DashboardLayout = () => {
     return (
-        // Full-width layout for the Dashboard
-        <div className="min-h-screen theme-bg-dark text-white"> 
+        // MODIFIED: Added flex flex-col to the main container
+        <div className="min-h-screen theme-bg-dark text-white flex flex-col"> 
             <Navbar /> 
             
-            {/* Dashboard Container: Flex structure for future sidebar integration */}
-            <div className="flex max-w-7xl mx-auto py-8 px-4">
-                {/* <DashboardSidebar /> // Add this later */}
-                
-                {/* Dashboard Main Content Area */}
-                <main className="flex-grow p-4 bg-gray-800 rounded-lg shadow-2xl">
-                    <Outlet /> {/* Renders the specific Dashboard route (Profile, Settings, etc.) */}
-                </main>
+            <div className="flex-grow">
+                <div className="max-w-7xl mx-auto py-8 px-4"> 
+                    
+                    <main className="p-4 bg-gray-800 rounded-lg shadow-2xl">
+                        <Outlet /> {/* Renders the specific Dashboard route (Profile, Settings, etc.) */}
+                    </main>
+                </div>
             </div>
+
+            <Footer/> 
         </div>
     );
 };
