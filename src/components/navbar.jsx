@@ -1,7 +1,7 @@
 // src/components/Navbar.jsx
 
 import React from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom'; // <--- UPDATED IMPORT: Added useNavigate
 import { useAuth } from '../contexts/AuthContext'; 
 
 // Branding
@@ -34,7 +34,19 @@ const navLinks = (
 );
 
 const Navbar = () => {
-  const { user, loading } = useAuth(); 
+  const { user, loading, logOut } = useAuth(); // <--- UPDATED: Added logOut
+  const navigate = useNavigate(); // <--- NEW: Initialize useNavigate
+
+  const handleLogout = () => {
+      logOut()
+          .then(() => {
+              navigate('/login'); // Redirect to login page after logout
+              console.log('User logged out successfully');
+          })
+          .catch(error => {
+              console.error('Logout failed:', error);
+          });
+  };
   
   if (loading) {
       return (
@@ -66,7 +78,8 @@ const Navbar = () => {
                 <li><Link to="/register">Register</Link></li>
               </>
             ) : (
-              <li><Link to="/dashboard">Dashboard</Link></li>
+              // NOTE: Role-based routing needs to be implemented inside a Protected Route or dedicated Dashboard component
+              <li><Link to="/dashboard">Dashboard</Link></li> 
             )}
           </ul>
         </div>
@@ -99,9 +112,9 @@ const Navbar = () => {
                 </div>
               </div>
               <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-white text-gray-800 rounded-box w-52">
-                <li><Link to="/profile">Profile</Link></li>
-                <li><Link to="/settings">Settings</Link></li>
-                <li><a className='hover:bg-red-100'>Logout</a></li> 
+                <li><Link to="/dashboard/profile">Profile</Link></li>
+                <li><Link to="/dashboard/settings">Settings</Link></li>
+                <li><a onClick={handleLogout} className='hover:bg-red-100'>Logout</a></li> {/* <--- UPDATED: Added onClick handler */}
               </ul>
             </div>
           </>

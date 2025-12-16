@@ -1,16 +1,20 @@
 // src/App.jsx
 
 import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+
 // Import Layouts
 import PublicLayout from './layouts/PublicLayout';
 import DashboardLayout from './layouts/DashboardLayout';
-import { Routes, Route } from 'react-router-dom';
 
 // Import Pages
 import DashboardPage from './pages/Dashboard'; 
 import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage'; 
+import ProtectedRoute from './routes/ProtectedRoute'; 
 
 // --- Placeholder Components for Routes (using theme classes) ---
+// 👇️ ADDED: These components were missing and causing the "ReferenceError"
 const HomePage = () => (
     <div className="p-8 max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-4 theme-accent-text">Welcome Home!</h1>
@@ -41,15 +45,15 @@ const ContactPage = () => (
         <p className='theme-text-light'>Get in touch with our support team.</p>
     </div>
 );
-const LoginPage = () => (
-    <div className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Login</h1>
-        <p className='theme-text-light'>Access your account.</p>
-    </div>
-);
+// ------------------------------------------
 
-const ProfilePage = () => <div className="p-8"><h1>User Profile</h1></div>;
-const SettingsPage = () => <div className="p-8"><h1>User Settings</h1></div>;
+// Placeholder Dashboard Components for different roles
+const StudentDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Student Dashboard Overview</h1><p className='theme-text-light'>View your specific student panels here.</p></div>;
+const TutorDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Tutor Dashboard Overview</h1><p className='theme-text-light'>Manage your tutor profile and applications here.</p></div>;
+const AdminDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Admin Dashboard Overview</h1><p className='theme-text-light'>Manage system settings and users here.</p></div>;
+
+const ProfilePage = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">User Profile</h1></div>;
+const SettingsPage = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">User Settings</h1></div>;
 // ------------------------------------------
 
 function App() {
@@ -65,15 +69,25 @@ function App() {
         <Route path="tutors" element={<TutorsPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="contact" element={<ContactPage />} />
-        <Route path="login" element={<LoginPage />} />
+        <Route path="login" element={<LoginPage />} /> 
         <Route path="register" element={<RegisterPage />} />
       </Route>
 
-      {/* 2. DASHBOARD ROUTES (Uses specialized layout, without Footer) */}
+      {/* 2. DASHBOARD ROUTES (Protected and Role-Based) */}
       <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route index element={<DashboardPage />} /> 
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="settings" element={<SettingsPage />} />
+        <Route element={<ProtectedRoute />}>
+            
+            <Route index element={<DashboardPage />} /> 
+
+            {/* Role-Specific Dashboard Routes */}
+            <Route path="student" element={<StudentDashboard />} />
+            <Route path="tutor" element={<TutorDashboard />} />
+            <Route path="admin" element={<AdminDashboard />} />
+
+            {/* Common Profile/Settings Routes (Nested under the role paths) */}
+            <Route path=":role/profile" element={<ProfilePage />} />
+            <Route path=":role/settings" element={<SettingsPage />} />
+        </Route>
       </Route>
       
       {/* Fallback 404 Route */}

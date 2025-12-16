@@ -3,10 +3,14 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { 
     onAuthStateChanged, 
-    createUserWithEmailAndPassword, // <--- NEW IMPORT
-    updateProfile // <--- NEW IMPORT
-} from 'firebase/auth'; // <--- UPDATED IMPORT
-import { auth } from '../firebase/firebase.init'; // Import auth from your setup file
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, // <--- NEW IMPORT
+    GoogleAuthProvider,        // <--- NEW IMPORT
+    signInWithPopup,           // <--- NEW IMPORT
+    signOut,                   // <--- NEW IMPORT
+    updateProfile 
+} from 'firebase/auth'; 
+import { auth } from '../firebase/firebase.init'; 
 
 // 1. Create the Context
 export const AuthContext = createContext(null);
@@ -16,55 +20,110 @@ export const useAuth = () => {
     return useContext(AuthContext);
 };
 
+// --- Helper: Save/Update user profile in MongoDB and get JWT ---
+const getJwtToken = async (email) => {
+    // 1. Get JWT Token from Backend
+    const response = await fetch('http://localhost:3000/jwt', { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email }),
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        // 2. Store Token in Local Storage (for subsequent requests)
+        localStorage.setItem('access-token', data.token);
+        console.log('JWT Token received and stored.');
+    } else {
+        console.error("Failed to fetch JWT Token.");
+    }
+};
+
+
+// Helper function to save new user to DB (called during registration or first-time social login)
+const saveUserToDb = async (user, phone = null, role = 'Student') => {
+    const userToSave = {
+        email: user.email,
+        name: user.displayName || user.email.split('@')[0],
+        phone: phone, 
+        role: role, // Default role "Student" for Google Login
+        createdAt: new Date(),
+    };
+
+    const response = await fetch('http://localhost:3000/users', { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userToSave),
+    });
+
+    if (!response.ok) {
+        console.error("Failed to save user profile to database.");
+    }
+};
+
 // 3. The Provider Component
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null); 
     const [loading, setLoading] = useState(true); 
 
-    // Firebase Authentication: Register New User
+    // --- Authentication Methods ---
+    
+    // 1. Email & Password Registration (Updated to get JWT)
     const createUser = async (email, password, name, phone, role) => {
-        // 1. Create user in Firebase Auth
         const result = await createUserWithEmailAndPassword(auth, email, password);
 
-        // 2. Update the user's profile (Name and potential PhotoURL)
         await updateProfile(result.user, {
             displayName: name,
-            // photoURL: 'optional-photo-url'
         });
 
-        // 3. Prepare user data for MongoDB storage
-        const userToSave = {
-            email: result.user.email,
-            name: name,
-            phone: phone,
-            role: role,
-            createdAt: new Date(),
-        };
-
-        // 4. Save user profile to database (Backend API Call)
-        // NOTE: Replace with your actual deployed URL when ready
-        const response = await fetch('http://localhost:3000/users', { 
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userToSave),
-        });
-
-        if (!response.ok) {
-            console.error("Failed to save user profile to database.");
-            // Optional: Handle error by deleting Firebase user if DB save fails
-        }
+        await saveUserToDb(result.user, phone, role);
         
-        // Return the result object for the frontend to use
+        await getJwtToken(result.user.email); // Get JWT
         return result;
     };
-    
+
+    // 2. Email & Password Login <--- NEW
+    const logIn = async (email, password) => {
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        
+        await getJwtToken(result.user.email); // Get JWT
+        
+        return result;
+    };
+
+    // 3. Google Sign-In <--- NEW
+    const googleProvider = new GoogleAuthProvider();
+    const googleSignIn = async () => {
+        const result = await signInWithPopup(auth, googleProvider);
+        
+        await saveUserToDb(result.user, null, 'Student'); // Save with default role "Student"
+        
+        await getJwtToken(result.user.email); // Get JWT
+        
+        return result;
+    };
+
+    // 4. Logout <--- NEW
+    const logOut = () => {
+        localStorage.removeItem('access-token');
+        return signOut(auth);
+    };
+
     // Set up the listener for Firebase Authentication state changes
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             console.log('User state changed:', currentUser);
             setUser(currentUser);
+            
+            // Re-fetch token on refresh if needed
+            if (currentUser && !localStorage.getItem('access-token')) {
+                await getJwtToken(currentUser.email);
+            }
+
             setLoading(false); // Authentication check is complete
         });
 
@@ -72,16 +131,17 @@ const AuthProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
     
-    // Auth functions will be added here later (e.g., login, logout)
     const authInfo = {
         user,
         loading,
-        createUser, // <--- UPDATED: Export the new function
+        createUser,
+        logIn,      
+        googleSignIn, 
+        logOut,     
     };
 
     return (
         <AuthContext.Provider value={authInfo}>
-            {/* Wait until Firebase confirms the user state before rendering the app */}
             {!loading && children}
         </AuthContext.Provider>
     );
