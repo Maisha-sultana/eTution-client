@@ -12,15 +12,9 @@ import DashboardPage from './pages/Dashboard';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage'; 
 import ProtectedRoute from './routes/ProtectedRoute'; 
+import HomePage from './pages/HomePage';
 
-// --- Placeholder Components for Routes (using theme classes) ---
-// 👇️ ADDED: These components were missing and causing the "ReferenceError"
-const HomePage = () => (
-    <div className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Welcome Home!</h1>
-        <p className='theme-text-light'>Tuition Management System Landing Page.</p>
-    </div>
-);
+
 const TuitionsPage = () => (
     <div className="p-8 max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-4 theme-accent-text">Tuitions Listings</h1>
