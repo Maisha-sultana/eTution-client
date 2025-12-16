@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+// AOS attributes are used below, assuming AOS is initialized in main.jsx
 
 // Component: Dot Pattern Background for visual interest in Hero Section
 const DotPattern = () => (
@@ -17,13 +18,15 @@ const DotPattern = () => (
 );
 
 
-// Component: Tuition Card (Unchanged)
+// Component: Tuition Card
 const TuitionCard = ({ tuition }) => (
     <motion.div 
         className="p-6 bg-gray-800 rounded-xl shadow-2xl border-l-4 border-emerald-500/80 hover:border-emerald-400 transition duration-300 transform hover:scale-[1.02]"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
+        data-aos="fade-up" // AOS Effect
+        data-aos-delay="50"
     >
         <h3 className="text-xl font-bold theme-accent-text mb-2">{tuition.subject}</h3>
         <p className="text-sm text-gray-400 mb-3">{tuition.classLevel} | {tuition.location}</p>
@@ -42,13 +45,15 @@ const TuitionCard = ({ tuition }) => (
     </motion.div>
 );
 
-// Component: Tutor Card (Unchanged)
+// Component: Tutor Card
 const TutorCard = ({ tutor }) => (
     <motion.div
         className="p-4 bg-gray-800 rounded-xl shadow-2xl border-t-4 border-yellow-400/80 hover:border-yellow-300 transition duration-300 flex flex-col items-center text-center transform hover:translate-y-[-5px]"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
+        data-aos="zoom-in" // AOS Effect
+        data-aos-delay="100"
     >
         <div className="avatar mb-3">
             <div className="w-20 rounded-full ring ring-yellow-400 ring-offset-base-100 ring-offset-2">
@@ -67,7 +72,7 @@ const TutorCard = ({ tutor }) => (
     </motion.div>
 );
 
-// NEW: Component for How it Works Step (3 steps visual grid)
+// Component for How it Works Step
 const WorkStep = ({ number, title, description, icon }) => (
     <motion.div 
         className="text-center p-6 bg-gray-800 rounded-xl shadow-xl border border-gray-700/50 hover:border-emerald-400 transition duration-300 relative group"
@@ -75,6 +80,8 @@ const WorkStep = ({ number, title, description, icon }) => (
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
+        data-aos="fade-left" // AOS Effect
+        data-aos-delay={number * 100} // Stagger delay based on step number
     >
         <div className="mx-auto w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-emerald-400/10 group-hover:bg-emerald-400 transition duration-300">
             {icon}
@@ -87,14 +94,16 @@ const WorkStep = ({ number, title, description, icon }) => (
     </motion.div>
 );
 
-// NEW: Component for Why Choose Us Feature (features section)
-const FeatureCard = ({ title, description, icon }) => (
+// Component for Why Choose Us Feature
+const FeatureCard = ({ title, description, icon, delay }) => (
     <motion.div 
         className="p-6 bg-gray-800 rounded-xl shadow-lg border border-yellow-400/20 hover:border-yellow-400 transition duration-300 flex items-start space-x-4"
         initial={{ scale: 0.8, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ type: "spring", stiffness: 100 }}
+        data-aos="fade-up" // AOS Effect
+        data-aos-delay={delay} // Stagger delay
     >
         <div className="w-8 h-8 flex-shrink-0 theme-secondary-text">
             {icon}
@@ -115,7 +124,7 @@ const HomePage = () => {
     const [error, setError] = useState(null);
     const apiUrl = 'http://localhost:3000'; 
 
-    // Fetch data logic (POST method) - Unchanged
+    // Fetch data logic (POST method)
     useEffect(() => {
         const fetchData = async (endpoint, setter, loadingSetter, errorMsg) => {
             try {
@@ -147,28 +156,47 @@ const HomePage = () => {
 
     return (
         <div className="theme-bg-dark theme-text-light">
-            {/* 1. Hero Section (Unchanged UI from last request) */}
+            {/* 1. Hero Section (Unique Floating Card Design) */}
             <motion.header 
-                className="relative overflow-hidden py-24 lg:py-40 text-center border-b border-emerald-400/50"
+                // UPDATED PADDING: Adjusted vertical padding
+                className="relative overflow-hidden py-20 lg:py-24 text-center border-b border-emerald-400/50"
                 style={{ 
-                    background: `radial-gradient(circle at 50% 10%, #1a2a33 0%, #121d23 80%)`
+                    // Enhanced Gradient for depth
+                    background: `linear-gradient(145deg, #101827 0%, #0d121b 100%)` 
                 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.5 }}
+                data-aos="fade-down"
             >
                 <DotPattern />
-                <div className="relative max-w-4xl mx-auto px-4 z-10">
+                
+                {/* FLOATING GLASS CARD EFFECT CONTAINER */}
+                <div 
+                    className="relative max-w-5xl mx-auto px-4 z-10 p-10 md:p-14 rounded-xl 
+                                backdrop-blur-md bg-gray-900/40 border border-emerald-400/30 
+                                shadow-2xl shadow-gray-900/50" // UPDATED Floating Card Style
+                >
+                    
                     <motion.h1 
-                        className="text-5xl lg:text-7xl font-extrabold mb-4 leading-tight"
+                        className="text-5xl lg:text-7xl font-extrabold mb-3 leading-tight" // UPDATED mb-3
                         variants={headerVariant}
                         initial="hidden"
                         animate="visible"
                     >
                         <span className="theme-accent-text font-black">SikkhaHub:</span> <span className="text-gray-50">Connect to <br className='hidden md:inline' />Your <span className='theme-secondary-text'>Future.</span></span> 
                     </motion.h1>
+                    
+                    {/* Subtle Accent Line Animation */}
+                    <motion.div 
+                        className="w-1/4 h-1 mx-auto my-5 bg-emerald-400 rounded-full" // UPDATED my-5
+                        initial={{ width: 0 }}
+                        animate={{ width: '25%' }}
+                        transition={{ delay: 0.8, duration: 1.5 }}
+                    ></motion.div>
+
                     <motion.p 
-                        className="text-lg lg:text-xl max-w-2xl mx-auto mb-8 text-gray-300"
+                        className="text-lg lg:text-xl max-w-2xl mx-auto mb-8 text-gray-300" // UPDATED mb-8
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
@@ -181,24 +209,99 @@ const HomePage = () => {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 1, duration: 0.5 }}
                     >
-                        <Link to="/register" className="btn bg-emerald-500 text-gray-900 hover:bg-emerald-600 border-none text-base font-semibold px-8 py-3 h-auto shadow-lg shadow-emerald-500/30">
+                        <Link to="/register" className="btn bg-emerald-500 text-gray-900 hover:bg-emerald-600 border-none text-base font-semibold px-8 py-3 h-auto shadow-xl shadow-emerald-500/40 transform hover:scale-105 transition-transform">
                             Join as a Tutor
                         </Link>
-                        <Link to="/tuitions" className="btn btn-outline border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-gray-900 text-base font-semibold px-8 py-3 h-auto shadow-lg shadow-yellow-400/30">
+                        <Link to="/tuitions" className="btn btn-outline border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-gray-900 text-base font-semibold px-8 py-3 h-auto shadow-xl shadow-yellow-400/40 transform hover:scale-105 transition-transform">
                             Find Tuition
                         </Link>
                     </motion.div>
                 </div>
             </motion.header>
 
-            {/* 2. NEW SECTION: How the Platform Works (3 steps visual grid) */}
-            <section className="py-20 max-w-7xl mx-auto px-4">
+            {/* 2. Dynamic Section: Latest Tuition Posts (6 data) */}
+            <section className="py-14 max-w-7xl mx-auto px-4"> {/* UPDATED: Increased top padding for separation */}
+                <motion.h2 
+                    className="text-4xl font-extrabold mb-10 text-center theme-accent-text"
+                    variants={headerVariant}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.5 }}
+                    data-aos="fade-right"
+                >
+                    <span className='border-b-4 border-emerald-400/50 pb-1'>Latest Tuition Posts</span>
+                </motion.h2>
+
+                {loadingTuitions ? (
+                    <div className='flex justify-center'><span className="loading loading-spinner loading-lg text-emerald-400"></span></div>
+                ) : error ? (
+                    <p className="text-center text-red-400">{error}</p>
+                ) : (
+                    <motion.div 
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.1 }}
+                        transition={{ staggerChildren: 0.1 }} 
+                    >
+                        {latestTuitions.map((tuition, index) => (
+                            <TuitionCard key={index} tuition={tuition} />
+                        ))}
+                    </motion.div>
+                )}
+                
+                <div className="text-center mt-12" data-aos="fade-up">
+                    <Link to="/tuitions" className="btn btn-lg btn-outline border-emerald-400 text-emerald-400 hover:bg-emerald-400 hover:text-gray-900 transition duration-200 shadow-md">
+                        View All Tuitions
+                    </Link>
+                </div>
+            </section>
+
+            {/* 3. Dynamic Section: Featured Tutors (3 data) */}
+            <section className="py-12 max-w-7xl mx-auto px-4 border-t border-gray-700/50">
+                <motion.h2 
+                    className="text-4xl font-extrabold mb-12 text-center theme-secondary-text"
+                    variants={headerVariant}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.5 }}
+                    data-aos="fade-left"
+                >
+                    <span className='border-b-4 border-yellow-400/50 pb-1'>Featured Tutors</span>
+                </motion.h2>
+
+                {loadingTutors ? (
+                    <div className='flex justify-center'><span className="loading loading-spinner loading-lg text-yellow-400"></span></div>
+                ) : (
+                    <motion.div 
+                        className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.1 }}
+                        transition={{ staggerChildren: 0.15 }}
+                    >
+                        {latestTutors.map((tutor, index) => (
+                            <TutorCard key={index} tutor={tutor} />
+                        ))}
+                    </motion.div>
+                )}
+                
+                <div className="text-center mt-12" data-aos="fade-up">
+                    <Link to="/tutors" className="btn btn-lg btn-outline border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-gray-900 transition duration-200 shadow-md">
+                        View All Tutors
+                    </Link>
+                </div>
+            </section>
+            
+            {/* 4. How the Platform Works (3 steps visual grid) - AFTER Tutors */}
+            <section className="py-16 max-w-7xl mx-auto px-4 border-t border-gray-700/50">
                 <motion.h2 
                     className="text-4xl font-extrabold mb-12 text-center text-gray-50"
                     variants={headerVariant}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.5 }}
+                    data-aos="fade-down"
                 >
                     <span className='border-b-4 border-emerald-400 pb-1'>How SikkhaHub Works</span>
                 </motion.h2>
@@ -243,14 +346,15 @@ const HomePage = () => {
                 </motion.div>
             </section>
 
-            {/* 3. NEW SECTION: Why Choose Us (features section) */}
-            <section className="py-20 max-w-7xl mx-auto px-4 border-t border-gray-700/50">
+            {/* 5. Why Choose Us (features section) - AFTER How it Works */}
+            <section className="py-14 max-w-7xl mx-auto px-4 border-t border-gray-700/50">
                 <motion.h2 
                     className="text-4xl font-extrabold mb-12 text-center theme-secondary-text"
                     variants={headerVariant}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.5 }}
+                    data-aos="fade-up"
                 >
                     <span className='border-b-4 border-yellow-400 pb-1'>Why Choose SikkhaHub?</span>
                 </motion.h2>
@@ -265,6 +369,7 @@ const HomePage = () => {
                     <FeatureCard
                         title="Verified Tutors"
                         description="All tutors undergo a rigorous verification process, including background checks and credential validation."
+                        delay={0}
                         icon={
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -275,6 +380,7 @@ const HomePage = () => {
                     <FeatureCard
                         title="Transparent Payments"
                         description="Automated, secure payment processing ensures timely and transparent transactions for both parties."
+                        delay={100}
                         icon={
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <rect x="3" y="6" width="18" height="13" rx="2" ry="2"/>
@@ -286,6 +392,7 @@ const HomePage = () => {
                     <FeatureCard
                         title="Digital Tracking"
                         description="Monitor class attendance, topics covered, and progress reports directly through your personalized dashboard."
+                        delay={200}
                         icon={
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -298,6 +405,7 @@ const HomePage = () => {
                     <FeatureCard
                         title="Role-Based Dashboards"
                         description="Get a customized view and tools based on whether you are a Student, Tutor, or Admin user."
+                        delay={300}
                         icon={
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <rect x="3" y="3" width="7" height="9"/>
@@ -310,6 +418,7 @@ const HomePage = () => {
                     <FeatureCard
                         title="24/7 Support"
                         description="Our dedicated support team is available around the clock to assist with any platform or tuition issues."
+                        delay={400}
                         icon={
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M12 22c-4.42 0-8-3.58-8-8 0-4.42 3.58-8 8-8s8 3.58 8 8c0 4.42-3.58 8-8 8z"/>
@@ -327,6 +436,7 @@ const HomePage = () => {
                     <FeatureCard
                         title="Quality Matchmaking"
                         description="Advanced algorithms help students and tutors find the most compatible match based on location, subject, and salary."
+                        delay={500}
                         icon={
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M20 17.65V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2.35"/><path d="M18 10V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v6"/><path d="M12 22c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/><path d="M12 13v3h3"/>
@@ -334,79 +444,6 @@ const HomePage = () => {
                         }
                     />
                 </motion.div>
-            </section>
-
-
-            {/* 4. Dynamic Section: Latest Tuition Posts (6 data) */}
-            <section className="py-16 max-w-7xl mx-auto px-4">
-                <motion.h2 
-                    className="text-4xl font-extrabold mb-10 text-center theme-accent-text"
-                    variants={headerVariant}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.5 }}
-                >
-                    <span className='border-b-4 border-emerald-400/50 pb-1'>Latest Tuition Posts</span>
-                </motion.h2>
-
-                {loadingTuitions ? (
-                    <div className='flex justify-center'><span className="loading loading-spinner loading-lg text-emerald-400"></span></div>
-                ) : error ? (
-                    <p className="text-center text-red-400">{error}</p>
-                ) : (
-                    <motion.div 
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.1 }}
-                        transition={{ staggerChildren: 0.1 }} 
-                    >
-                        {latestTuitions.map((tuition, index) => (
-                            <TuitionCard key={index} tuition={tuition} />
-                        ))}
-                    </motion.div>
-                )}
-                
-                <div className="text-center mt-12">
-                    <Link to="/tuitions" className="btn btn-lg btn-outline border-emerald-400 text-emerald-400 hover:bg-emerald-400 hover:text-gray-900 transition duration-200 shadow-md">
-                        View All Tuitions
-                    </Link>
-                </div>
-            </section>
-
-            {/* 5. Dynamic Section: Featured Tutors (3 data) */}
-            <section className="py-16 max-w-7xl mx-auto px-4 border-t border-gray-700/50">
-                <motion.h2 
-                    className="text-4xl font-extrabold mb-10 text-center theme-secondary-text"
-                    variants={headerVariant}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.5 }}
-                >
-                    <span className='border-b-4 border-yellow-400/50 pb-1'>Featured Tutors</span>
-                </motion.h2>
-
-                {loadingTutors ? (
-                    <div className='flex justify-center'><span className="loading loading-spinner loading-lg text-yellow-400"></span></div>
-                ) : (
-                    <motion.div 
-                        className="grid grid-cols-1 md:grid-cols-3 gap-8"
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.1 }}
-                        transition={{ staggerChildren: 0.15 }}
-                    >
-                        {latestTutors.map((tutor, index) => (
-                            <TutorCard key={index} tutor={tutor} />
-                        ))}
-                    </motion.div>
-                )}
-                
-                <div className="text-center mt-12">
-                    <Link to="/tutors" className="btn btn-lg btn-outline border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-gray-900 transition duration-200 shadow-md">
-                        View All Tutors
-                    </Link>
-                </div>
             </section>
         </div>
     );
