@@ -20,7 +20,8 @@ import HomePage from './pages/HomePage';
 import PostNewTuition from './pages/dashboard/PostNewTuition'; 
 // 👇️ NEW IMPORT: MyTuitions component
 import MyTuitions from './pages/dashboard/MyTuitions'; 
-
+import AppliedTutors from './pages/dashboard/AppliedTutors'; 
+import Payment from './pages/dashboard/Payment';
 
 // --- Placeholder Components for Public Routes (from previous code) ---
 const TuitionsPage = () => (
@@ -48,11 +49,18 @@ const ContactPage = () => (
     </div>
 );
 // ------------------------------------------
-
-// --- Placeholder Components for Dashboard Pages (NEW Student Routes) ---
-const AppliedTutors = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Applied Tutors</h1><p className='theme-text-light'>Applications received for your posts.</p></div>;
-const Payments = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Payment History</h1><p className='theme-text-light'>Your history of payments.</p></div>;
-const ProfileSettings = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Profile Settings</h1><p className='theme-text-light'>Update your personal information.</p></div>;
+const PaymentsHistory = () => (
+    <div className="p-8">
+        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Payment History</h1>
+        <p className='theme-text-light'>Your history of successful payments.</p>
+    </div>
+);
+const ProfileSettings = () => (
+    <div className="p-8">
+        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Profile Settings</h1>
+        <p className='theme-text-light'>Update your personal information.</p>
+    </div>
+);
 
 // Placeholder Dashboard Overviews for other roles
 const StudentDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Student Dashboard Overview</h1><p className='theme-text-light'>View your specific student panels here.</p></div>;
@@ -92,7 +100,7 @@ function App() {
             <Route path="student/my-tuitions" element={<MyTuitions />} /> {/* <--- UPDATED */}
             <Route path="student/post-tuition" element={<PostNewTuition />} /> 
             <Route path="student/applied-tutors" element={<AppliedTutors />} />
-            <Route path="student/payments" element={<Payments />} />
+            <Route path="student/payments" element={<Payment />} />
 
             {/* Common Profile/Settings Routes (Nested under the role paths) */}
             <Route path=":role/profile" element={<ProfileSettings />} /> 
