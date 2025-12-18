@@ -1,7 +1,7 @@
-// src/App.jsx (MODIFIED)
+// src/App.jsx
 
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 
 // Import Layouts
 import PublicLayout from './layouts/PublicLayout';
@@ -12,49 +12,96 @@ import DashboardPage from './pages/Dashboard';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage'; 
 import ProtectedRoute from './routes/ProtectedRoute'; 
-
-// 👇️ IMPORT DYNAMIC HOME PAGE 
 import HomePage from './pages/HomePage'; 
+import TuitionDetails from './pages/TuitionDetails';
 
-// 👇️ NEW IMPORTS: Student Dashboard Pages
+// Import Student Dashboard Pages
 import PostNewTuition from './pages/dashboard/PostNewTuition'; 
-// 👇️ NEW IMPORT: MyTuitions component
 import MyTuitions from './pages/dashboard/MyTuitions'; 
 import AppliedTutors from './pages/dashboard/AppliedTutors'; 
-import Payment from './pages/dashboard/Payment';
 
-// --- Placeholder Components for Public Routes (from previous code) ---
-const TuitionsPage = () => (
-    <div className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Tuitions Listings</h1>
-        <p className='theme-text-light'>Browse available tuition posts here.</p>
-    </div>
-);
+// Import Tutor Dashboard Pages
+import MyApplications from './pages/dashboard/MyApplications';
+import OngoingTuitions from './pages/dashboard/OngoingTuitions';
+import RevenueHistory from './pages/dashboard/RevenueHistory';
+
+// Shared Dashboard Pages
+
+import PaymentSuccess from './pages/dashboard/PaymentSuccess';
+const TuitionsPage = () => {
+    const [tuitions, setTuitions] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        // Backend theke SOB data fetch kora (Limit chara)
+        fetch('http://localhost:3000/all-tuitions')
+        .then(res => res.json())
+        .then(data => {
+            setTuitions(data);
+            setLoading(false);
+        })
+        .catch(err => {
+            console.error("Error:", err);
+            setLoading(false);
+        });
+    }, []);
+
+    if (loading) return (
+        <div className="flex justify-center py-20 theme-bg-dark min-h-screen">
+            <span className="loading loading-spinner loading-lg text-emerald-400"></span>
+        </div>
+    );
+
+    return (
+        <div className="p-8 max-w-7xl mx-auto min-h-screen">
+            <h1 className="text-4xl font-extrabold mb-8 theme-accent-text border-b-2 border-emerald-400 pb-2 inline-block">
+                All Tuitions Listings
+            </h1>
+           
+            {tuitions.length === 0 ? (
+                <p className="text-gray-400 text-center py-10">No tuition posts available.</p>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {tuitions.map((tuition) => (
+                        <div key={tuition._id} className="p-6 bg-gray-800 rounded-xl shadow-2xl border-l-4 border-emerald-500/80 hover:border-emerald-400 transition duration-300">
+                            <h3 className="text-xl font-bold theme-accent-text mb-2">{tuition.subject}</h3>
+                            <p className="text-sm text-gray-400 mb-3">{tuition.classLevel} | {tuition.location}</p>
+                            <div className="space-y-1 mb-4">
+                                <p className="text-gray-300 text-sm"><span className="font-semibold">Salary:</span> {tuition.salary}</p>
+                                <p className="text-gray-300 text-sm"><span className="font-semibold">Type:</span> {tuition.type}</p>
+                            </div>
+                            <Link to={`/tuition/${tuition._id}`} className="btn btn-sm bg-yellow-400 text-gray-900 hover:bg-yellow-500 border-none">
+                                View Details
+                            </Link>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
+// --- অন্যান্য প্লেসহোল্ডার পেজ ---
 const TutorsPage = () => (
     <div className="p-8 max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-4 theme-accent-text">Tutors Directory</h1>
         <p className='theme-text-light'>Find qualified tutors near you.</p>
     </div>
 );
+
 const AboutPage = () => (
     <div className="p-8 max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-4 theme-accent-text">About Us</h1>
-        <p className='theme-text-light'>Learn more about SikshaHub's mission.</p>
+        <p className='theme-text-light'>Learn more about SikkhaHub's mission.</p>
     </div>
 );
+
 const ContactPage = () => (
     <div className="p-8 max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-4 theme-accent-text">Contact Information</h1>
         <p className='theme-text-light'>Get in touch with our support team.</p>
     </div>
 );
-// ------------------------------------------
-const PaymentsHistory = () => (
-    <div className="p-8">
-        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Payment History</h1>
-        <p className='theme-text-light'>Your history of successful payments.</p>
-    </div>
-);
+
 const ProfileSettings = () => (
     <div className="p-8">
         <h1 className="text-3xl font-bold mb-4 theme-accent-text">Profile Settings</h1>
@@ -62,21 +109,19 @@ const ProfileSettings = () => (
     </div>
 );
 
-// Placeholder Dashboard Overviews for other roles
+// Dashboard Overview Components
 const StudentDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Student Dashboard Overview</h1><p className='theme-text-light'>View your specific student panels here.</p></div>;
 const TutorDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Tutor Dashboard Overview</h1><p className='theme-text-light'>Manage your tutor profile and applications here.</p></div>;
 const AdminDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Admin Dashboard Overview</h1><p className='theme-text-light'>Manage system settings and users here.</p></div>;
 
 
 function App() {
-  const [user, setUser] = useState(null); 
-
   return (
     <Routes>
-      
-      {/* 1. PUBLIC ROUTES (Uses Navbar and Footer) */}
+      {/* 1. PUBLIC ROUTES */}
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="tuition/:id" element={<TuitionDetails />} />
         <Route path="tuitions" element={<TuitionsPage />} />
         <Route path="tutors" element={<TutorsPage />} />
         <Route path="about" element={<AboutPage />} />
@@ -85,33 +130,38 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
       </Route>
 
-      {/* 2. DASHBOARD ROUTES (Protected and Role-Based) */}
+      {/* 2. DASHBOARD ROUTES */}
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route element={<ProtectedRoute />}>
-            
             <Route index element={<DashboardPage />} /> 
 
-            {/* Role-Specific Dashboard Overview Routes */}
+            {/* Student Dashboard Routes */}
             <Route path="student" element={<StudentDashboard />} />
-            <Route path="tutor" element={<TutorDashboard />} />
-            <Route path="admin" element={<AdminDashboard />} />
-
-            {/* Student Dashboard Specific Pages (NEW ROUTES) */}
-            <Route path="student/my-tuitions" element={<MyTuitions />} /> {/* <--- UPDATED */}
+            <Route path="student/my-tuitions" element={<MyTuitions />} /> 
             <Route path="student/post-tuition" element={<PostNewTuition />} /> 
             <Route path="student/applied-tutors" element={<AppliedTutors />} />
-            <Route path="student/payments" element={<Payment />} />
+            
+            <Route path="student/payment-success" element={<PaymentSuccess />} />
 
-            {/* Common Profile/Settings Routes (Nested under the role paths) */}
+            {/* Tutor Dashboard Routes */}
+            <Route path="tutor" element={<TutorDashboard />} />
+            <Route path="tutor/applications" element={<MyApplications />} />
+            <Route path="tutor/ongoing" element={<OngoingTuitions />} /> 
+            <Route path="tutor/revenue" element={<RevenueHistory />} />
+
+            {/* Admin Dashboard Routes */}
+            <Route path="admin" element={<AdminDashboard />} />
+
+            {/* Common Profile Routes */}
             <Route path=":role/profile" element={<ProfileSettings />} /> 
             <Route path=":role/settings" element={<ProfileSettings />} /> 
         </Route>
       </Route>
       
-      {/* Fallback 404 Route */}
+      {/* 404 Route */}
       <Route path="*" element={<div className="p-8 theme-bg-dark text-white min-h-screen"><h1>404 Not Found</h1></div>} />
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;
