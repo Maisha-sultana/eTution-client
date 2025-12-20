@@ -14,6 +14,7 @@ import LoginPage from './pages/LoginPage';
 import ProtectedRoute from './routes/ProtectedRoute'; 
 import HomePage from './pages/HomePage'; 
 import TuitionDetails from './pages/TuitionDetails';
+import TutorsPage from './pages/TutorsPage';
 
 // Import Student Dashboard Pages
 import PostNewTuition from './pages/dashboard/PostNewTuition'; 
@@ -25,15 +26,22 @@ import MyApplications from './pages/dashboard/MyApplications';
 import OngoingTuitions from './pages/dashboard/OngoingTuitions';
 import RevenueHistory from './pages/dashboard/RevenueHistory';
 
-// Shared Dashboard Pages
+// Import Admin Dashboard Pages
+import UserManagement from './pages/dashboard/admin/UserManagement';
+import TuitionManagement from './pages/dashboard/admin/TuitionManagement';
+import AdminAnalytics from './pages/dashboard/admin/AdminAnalytics';
 
+// Shared Dashboard Pages
 import PaymentSuccess from './pages/dashboard/PaymentSuccess';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+
 const TuitionsPage = () => {
     const [tuitions, setTuitions] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Backend theke SOB data fetch kora (Limit chara)
+        // Backend থেকে ডেটা ফেচ করা
         fetch('http://localhost:3000/all-tuitions')
         .then(res => res.json())
         .then(data => {
@@ -80,40 +88,12 @@ const TuitionsPage = () => {
         </div>
     );
 };
-// --- অন্যান্য প্লেসহোল্ডার পেজ ---
-const TutorsPage = () => (
-    <div className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Tutors Directory</h1>
-        <p className='theme-text-light'>Find qualified tutors near you.</p>
-    </div>
-);
 
-const AboutPage = () => (
-    <div className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 theme-accent-text">About Us</h1>
-        <p className='theme-text-light'>Learn more about SikkhaHub's mission.</p>
-    </div>
-);
-
-const ContactPage = () => (
-    <div className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Contact Information</h1>
-        <p className='theme-text-light'>Get in touch with our support team.</p>
-    </div>
-);
-
-const ProfileSettings = () => (
-    <div className="p-8">
-        <h1 className="text-3xl font-bold mb-4 theme-accent-text">Profile Settings</h1>
-        <p className='theme-text-light'>Update your personal information.</p>
-    </div>
-);
+const ProfileSettings = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Profile Settings</h1></div>;
 
 // Dashboard Overview Components
-const StudentDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Student Dashboard Overview</h1><p className='theme-text-light'>View your specific student panels here.</p></div>;
-const TutorDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Tutor Dashboard Overview</h1><p className='theme-text-light'>Manage your tutor profile and applications here.</p></div>;
-const AdminDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Admin Dashboard Overview</h1><p className='theme-text-light'>Manage system settings and users here.</p></div>;
-
+const StudentDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Student Dashboard Overview</h1></div>;
+const TutorDashboard = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Tutor Dashboard Overview</h1></div>;
 
 function App() {
   return (
@@ -130,7 +110,7 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
       </Route>
 
-      {/* 2. DASHBOARD ROUTES */}
+      {/* 2. DASHBOARD ROUTES (Protected) */}
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route element={<ProtectedRoute />}>
             <Route index element={<DashboardPage />} /> 
@@ -140,7 +120,6 @@ function App() {
             <Route path="student/my-tuitions" element={<MyTuitions />} /> 
             <Route path="student/post-tuition" element={<PostNewTuition />} /> 
             <Route path="student/applied-tutors" element={<AppliedTutors />} />
-            
             <Route path="student/payment-success" element={<PaymentSuccess />} />
 
             {/* Tutor Dashboard Routes */}
@@ -150,7 +129,9 @@ function App() {
             <Route path="tutor/revenue" element={<RevenueHistory />} />
 
             {/* Admin Dashboard Routes */}
-            <Route path="admin" element={<AdminDashboard />} />
+            <Route path="admin" element={<AdminAnalytics />} />
+            <Route path="admin/users" element={<UserManagement />} />
+            <Route path="admin/tuitions" element={<TuitionManagement />} />
 
             {/* Common Profile Routes */}
             <Route path=":role/profile" element={<ProfileSettings />} /> 
