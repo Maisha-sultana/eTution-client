@@ -35,6 +35,8 @@ import AdminAnalytics from './pages/dashboard/admin/AdminAnalytics';
 import PaymentSuccess from './pages/dashboard/PaymentSuccess';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
+import TutorProfileSettings from './pages/dashboard/tutor/TutorProfileSettings';
+import StudentProfile from './pages/dashboard/student/StudentProfile';
 
 const TuitionsPage = () => {
     const [tuitions, setTuitions] = useState([]);
@@ -121,13 +123,14 @@ function App() {
             <Route path="student/post-tuition" element={<PostNewTuition />} /> 
             <Route path="student/applied-tutors" element={<AppliedTutors />} />
             <Route path="student/payment-success" element={<PaymentSuccess />} />
+            <Route path="student/profile" element={<StudentProfile />} />
 
             {/* Tutor Dashboard Routes */}
-            <Route path="tutor" element={<TutorDashboard />} />
+           <Route path="tutor" element={<TutorDashboard />} />
+            <Route path="tutor/profile" element={<TutorProfileSettings />} /> {/* Updated */}
             <Route path="tutor/applications" element={<MyApplications />} />
             <Route path="tutor/ongoing" element={<OngoingTuitions />} /> 
             <Route path="tutor/revenue" element={<RevenueHistory />} />
-
             {/* Admin Dashboard Routes */}
             <Route path="admin" element={<AdminAnalytics />} />
             <Route path="admin/users" element={<UserManagement />} />
