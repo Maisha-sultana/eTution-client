@@ -19,7 +19,7 @@ const TutorProfileSettings = () => {
 
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:3000/tutor-profile/${user.email}`)
+            fetch(`https://e-tution-server-nine.vercel.app/tutor-profile/${user.email}`)
                 .then(res => res.json())
                 .then(data => {
                     // যদি ডাটাবেজে প্রোফাইল থাকে তবে তা সেট হবে, 
@@ -41,7 +41,7 @@ const TutorProfileSettings = () => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:3000/tutor-profile-update', {
+        const response = await fetch('https://e-tution-server-nine.vercel.app/tutor-profile-update', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(profile)

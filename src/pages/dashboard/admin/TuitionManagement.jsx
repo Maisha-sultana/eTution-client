@@ -5,7 +5,7 @@ const TuitionManagement = () => {
     const [tuitions, setTuitions] = useState([]);
 
     const fetchTuitions = () => {
-        fetch('http://localhost:3000/admin/all-tuitions')
+        fetch('https://e-tution-server-nine.vercel.app/admin/all-tuitions')
             .then(res => res.json())
             .then(data => setTuitions(data));
     };
@@ -13,7 +13,7 @@ const TuitionManagement = () => {
     useEffect(() => { fetchTuitions(); }, []);
 
     const handleStatus = async (id, status) => {
-        const res = await fetch(`http://localhost:3000/admin/tuition-status/${id}`, {
+        const res = await fetch(`https://e-tution-server-nine.vercel.app/admin/tuition-status/${id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status })

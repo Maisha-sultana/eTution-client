@@ -10,7 +10,7 @@ const EditTuitionModal = ({ post, onUpdate, onClose }) => {
     // Reusing the form structure but making it a controlled component for the modal
     const [formData, setFormData] = useState(post);
     const [loading, setLoading] = useState(false);
-    const apiUrl = 'http://localhost:3000/tuition';
+    const apiUrl = 'https://e-tution-server-nine.vercel.app/tuition';
 
     const inputClasses = "input input-bordered w-full bg-gray-700 border-gray-600 text-white focus:ring-emerald-500 focus:border-emerald-500";
     const labelClasses = "label text-gray-300 font-medium mb-1";
@@ -134,7 +134,7 @@ const MyTuitions = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
 
-    const apiUrl = 'http://localhost:3000';
+    const apiUrl = 'https://e-tution-server-nine.vercel.app';
 
     const fetchTuitions = async () => {
         if (!user?.email) {

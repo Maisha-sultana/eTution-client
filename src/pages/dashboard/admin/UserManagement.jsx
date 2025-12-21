@@ -6,7 +6,7 @@ const UserManagement = () => {
     const [loading, setLoading] = useState(true);
 
     const fetchUsers = () => {
-        fetch('http://localhost:3000/users')
+        fetch('https://e-tution-server-nine.vercel.app/users')
             .then(res => res.json())
             .then(data => {
                 setUsers(data);
@@ -17,7 +17,7 @@ const UserManagement = () => {
     useEffect(() => { fetchUsers(); }, []);
 
     const handleRoleChange = async (user, newRole) => {
-        const res = await fetch(`http://localhost:3000/users/${user._id}`, {
+        const res = await fetch(`https://e-tution-server-nine.vercel.app/users/${user._id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...user, role: newRole })
@@ -38,7 +38,7 @@ const UserManagement = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const res = await fetch(`http://localhost:3000/users/${id}`, { method: 'DELETE' });
+                const res = await fetch(`https://e-tution-server-nine.vercel.app/users/${id}`, { method: 'DELETE' });
                 if (res.ok) {
                     Swal.fire('Deleted!', 'User has been removed.', 'success');
                     fetchUsers();

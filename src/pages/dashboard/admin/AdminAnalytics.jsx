@@ -4,7 +4,7 @@ const AdminAnalytics = () => {
     const [stats, setStats] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:3000/admin/stats')
+        fetch('https://e-tution-server-nine.vercel.app/admin/stats')
             .then(res => res.json())
             .then(data => setStats(data));
     }, []);

@@ -10,7 +10,7 @@ const PaymentSuccess = () => {
 
     useEffect(() => {
         if (sessionId) {
-            fetch(`http://localhost:3000/payment-verify?session_id=${sessionId}`, {
+            fetch(`https://e-tution-server-nine.vercel.app/payment-verify?session_id=${sessionId}`, {
                 method: 'PATCH'
             })
             .then(res => res.json())

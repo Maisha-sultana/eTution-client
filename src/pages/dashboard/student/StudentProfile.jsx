@@ -15,7 +15,7 @@ const StudentProfile = () => {
 
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:3000/student-profile/${user.email}`)
+            fetch(`https://e-tution-server-nine.vercel.app/student-profile/${user.email}`)
                 .then(res => res.json())
                 .then(data => {
                     setProfile({
@@ -32,7 +32,7 @@ const StudentProfile = () => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:3000/student-profile-update', {
+        const response = await fetch('https://e-tution-server-nine.vercel.app/student-profile-update', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(profile)

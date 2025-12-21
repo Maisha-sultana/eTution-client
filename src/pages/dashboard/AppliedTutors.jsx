@@ -11,7 +11,7 @@ const AppliedTutors = () => {
     // ১. স্টুডেন্টের ইমেইল অনুযায়ী আবেদন করা টিউটরদের তালিকা নিয়ে আসা
     const fetchApplications = async () => {
         try {
-            const res = await fetch(`http://localhost:3000/applied-tutors/${user.email}`);
+            const res = await fetch(`https://e-tution-server-nine.vercel.app/applied-tutors/${user.email}`);
             const data = await res.json();
             setApplications(data);
         } catch (error) {
@@ -36,7 +36,7 @@ const AppliedTutors = () => {
 
         try {
             // ব্যাকএন্ডে চেকআউট সেশন তৈরির রিকোয়েস্ট পাঠানো
-            const res = await fetch('http://localhost:3000/create-checkout-session', {
+            const res = await fetch('https://e-tution-server-nine.vercel.app/create-checkout-session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(paymentData)
@@ -58,7 +58,7 @@ const AppliedTutors = () => {
 
     // ৩. রিজেক্ট হ্যান্ডলার
     const handleReject = async (id) => {
-        const res = await fetch(`http://localhost:3000/application-reject/${id}`, { method: 'PATCH' });
+        const res = await fetch(`https://e-tution-server-nine.vercel.app/application-reject/${id}`, { method: 'PATCH' });
         if (res.ok) {
             Swal.fire('Rejected', 'Application has been rejected.', 'info');
             fetchApplications();

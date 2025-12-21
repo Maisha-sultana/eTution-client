@@ -23,7 +23,7 @@ export const useAuth = () => {
 // --- Helper: Save/Update user profile in MongoDB and get JWT ---
 const getJwtToken = async (email) => {
     // 1. Get JWT Token from Backend
-    const response = await fetch('http://localhost:3000/jwt', { 
+    const response = await fetch('https://e-tution-server-nine.vercel.app/jwt', { 
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const saveUserToDb = async (user, phone = null, role = 'Student') => {
         createdAt: new Date(),
     };
 
-    const response = await fetch('http://localhost:3000/users', { 
+    const response = await fetch('https://e-tution-server-nine.vercel.app/users', { 
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

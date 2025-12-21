@@ -6,7 +6,7 @@ const TutorsPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('http://localhost:3000/all-tutors')
+        fetch('https://e-tution-server-nine.vercel.app/all-tutors')
             .then(res => res.json())
             .then(data => {
                 setTutors(data);

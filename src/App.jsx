@@ -44,7 +44,7 @@ const TuitionsPage = () => {
 
     useEffect(() => {
         // Backend থেকে ডেটা ফেচ করা
-        fetch('http://localhost:3000/all-tuitions')
+        fetch('https://e-tution-server-nine.vercel.app/all-tuitions')
         .then(res => res.json())
         .then(data => {
             setTuitions(data);

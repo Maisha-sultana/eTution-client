@@ -8,7 +8,7 @@ const MyApplications = () => {
     const [apps, setApps] = useState([]);
 
     const fetchApps = () => {
-        fetch(`http://localhost:3000/tutor-applications/${user.email}`)
+        fetch(`https://e-tution-server-nine.vercel.app/tutor-applications/${user.email}`)
             .then(res => res.json())
             .then(data => setApps(data));
     };
@@ -18,7 +18,7 @@ const MyApplications = () => {
     const handleCancel = (id) => {
         Swal.fire({ title: 'Cancel?', icon: 'warning', showCancelButton: true }).then(async (result) => {
             if (result.isConfirmed) {
-                const res = await fetch(`http://localhost:3000/application-cancel/${id}`, { method: 'DELETE' });
+                const res = await fetch(`https://e-tution-server-nine.vercel.app/application-cancel/${id}`, { method: 'DELETE' });
                 if (res.ok) { fetchApps(); Swal.fire('Cancelled'); }
             }
         });

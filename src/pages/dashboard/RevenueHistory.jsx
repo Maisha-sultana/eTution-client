@@ -5,7 +5,7 @@ const RevenueHistory = () => {
     const [payments, setPayments] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/tutor/revenue/${user.email}`)
+        fetch(`https://e-tution-server-nine.vercel.app/tutor/revenue/${user.email}`)
             .then(res => res.json())
             .then(data => setPayments(data));
     }, [user.email]);

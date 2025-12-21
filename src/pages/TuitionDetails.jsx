@@ -34,7 +34,7 @@ const TuitionDetails = () => {
     }, [user]);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/tuition/${id}`)
+        fetch(`https://e-tution-server-nine.vercel.app/tuition/${id}`)
             .then(res => res.json())
             .then(data => setTuition(data));
     }, [id]);
@@ -58,7 +58,7 @@ const TuitionDetails = () => {
         };
 
         try {
-            const res = await fetch('http://localhost:3000/applications', {
+            const res = await fetch('https://e-tution-server-nine.vercel.app/applications', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(applicationData)

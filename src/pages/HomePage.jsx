@@ -122,7 +122,7 @@ const HomePage = () => {
     const [loadingTuitions, setLoadingTuitions] = useState(true);
     const [loadingTutors, setLoadingTutors] = useState(true);
     const [error, setError] = useState(null);
-    const apiUrl = 'http://localhost:3000'; 
+    const apiUrl = 'https://e-tution-server-nine.vercel.app'; 
 
     // Fetch data logic (POST method)
     useEffect(() => {

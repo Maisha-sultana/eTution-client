@@ -30,7 +30,7 @@ const PostNewTuition = () => {
 
         try {
             // Ensure the backend route /tuition exists in index.js
-            const response = await fetch('http://localhost:3000/tuition', {
+            const response = await fetch('https://e-tution-server-nine.vercel.app/tuition', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

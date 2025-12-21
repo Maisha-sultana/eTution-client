@@ -6,7 +6,7 @@ const OngoingTuitions = () => {
     const [ongoing, setOngoing] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/tutor/ongoing/${user.email}`)
+        fetch(`https://e-tution-server-nine.vercel.app/tutor/ongoing/${user.email}`)
             .then(res => res.json())
             .then(data => setOngoing(data));
     }, [user.email]);
