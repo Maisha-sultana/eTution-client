@@ -6,20 +6,19 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom' 
 import AuthProvider from './contexts/AuthContext.jsx' 
-import 'aos/dist/aos.css'; // 👈️ NEW: Import AOS CSS
-import AOS from 'aos';     // 👈️ NEW: Import AOS library
+import 'aos/dist/aos.css'; 
+import AOS from 'aos';     
 
-// NEW: Initialize AOS outside the component tree
 AOS.init({
   duration: 1000, // global duration
-  once: true,     // whether animation should happen only once - default
+  once: true,     
 });
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* BrowserRouter enables routing */}
+  
     <BrowserRouter>
-      {/* AuthProvider makes user state available everywhere */}
+    
       <AuthProvider>
         <App />
       </AuthProvider>

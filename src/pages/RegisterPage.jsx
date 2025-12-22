@@ -1,4 +1,4 @@
-// src/pages/RegisterPage.jsx
+
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ const RegisterPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
-    const [role, setRole] = useState(''); // Default role
+    const [role, setRole] = useState(''); 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const { createUser } = useAuth(); 
@@ -45,12 +45,10 @@ const RegisterPage = () => {
     const labelClasses = "label theme-accent-text";
 
     return (
-        // ********** START OF UI CHANGE **********
         <div className="p-4 max-w-xl mx-auto my-4">
             <h1 className="text-4xl font-extrabold mb-3 theme-accent-text text-center">Register</h1>
             <p className='theme-text-light text-center mb-4'>Create a new  account for SikkhaHub.</p>
 
-            {/* This is the new visually distinct card wrapper */}
             <div className="bg-gray-800 p-8 rounded-xl shadow-2xl border border-emerald-400/30">
                 <form onSubmit={handleSubmit} className="card-body p-0">
                     {error && <div role="alert" className="alert alert-error mb-4 text-white">{error}</div>}
@@ -96,7 +94,7 @@ const RegisterPage = () => {
                         <label className="label">
                             <span className={labelClasses}>I am registering as a:</span>
                         </label>
-                        {/* The role selection background is now gray-700, standing out against gray-800 */}
+                    
                         <div className="flex justify-around bg-gray-700 p-3 rounded-lg"> 
                             <label className="flex items-center space-x-2 cursor-pointer">
                                 <input type="radio" name="role" value="Student" className="radio radio-primary checked:bg-emerald-400" 
@@ -125,7 +123,6 @@ const RegisterPage = () => {
                 </form>
             </div>
         </div>
-        // ********** END OF UI CHANGE **********
     );
 };
 

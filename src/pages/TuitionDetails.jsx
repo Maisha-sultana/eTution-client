@@ -4,7 +4,6 @@ import { useAuth } from '../contexts/AuthContext';
 import Swal from 'sweetalert2';
 import * as jwtDecodeModule from 'jwt-decode';
 
-// JWT থেকে রোল বের করার জন্য হেল্পার ফাংশন
 const jwtDecode = (token) => {
     let decoder = null;
     if (typeof jwtDecodeModule.jwtDecode === 'function') decoder = jwtDecodeModule.jwtDecode;
@@ -20,7 +19,6 @@ const TuitionDetails = () => {
     const [showModal, setShowModal] = useState(false);
     const [userRole, setUserRole] = useState(null);
 
-    // ইউজার রোল চেক করা
     useEffect(() => {
         const token = localStorage.getItem('access-token');
         if (token) {
@@ -39,7 +37,7 @@ const TuitionDetails = () => {
             .then(data => setTuition(data));
     }, [id]);
 
-    // অ্যাপ্লিকেশন সাবমিট হ্যান্ডলার
+  
     const handleApplySubmit = async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -95,7 +93,6 @@ const TuitionDetails = () => {
                     <p className="md:col-span-2"><span className="text-gray-400 font-medium">Requirements:</span> {tuition.requirements || "None"}</p>
                 </div>
 
-                {/* শুধুমাত্র টিউটর হলে "Apply" বাটন দেখাবে */}
                 {userRole === 'tutor' && (
                     <button 
                         onClick={() => setShowModal(true)} 

@@ -1,30 +1,28 @@
-// src/pages/LoginPage.jsx
+
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-// 👇️ ফিক্স: Wildcard Import ব্যবহার করা হলো
+
 import * as jwtDecodeModule from 'jwt-decode'; 
 
-// 👇️ ULTIMATE FIX: Wrapper Function ব্যবহার করে মডিউল অবজেক্ট থেকে ফাংশনটি নিরাপদে খুঁজে বের করা হলো।
 const jwtDecode = (token) => {
     let decoder = null;
 
-    // 1. Named Export (jwtDecode) প্রপার্টিটি খুঁজুন (v4+)
     if (typeof jwtDecodeModule.jwtDecode === 'function') {
         decoder = jwtDecodeModule.jwtDecode; 
     }
-    // 2. যদি না পাওয়া যায়, তবে Default Export (default) খুঁজুন (v3.0.0-)
+  
     else if (typeof jwtDecodeModule.default === 'function') {
         decoder = jwtDecodeModule.default;
     }
-    // 3. যদি তাও না হয়, তবে মডিউল অবজেক্টটি নিজেই ফাংশন কিনা দেখুন
+   
     else if (typeof jwtDecodeModule === 'function') {
         decoder = jwtDecodeModule;
     }
 
     if (typeof decoder !== 'function') {
-        // যদি সমস্ত চেক ব্যর্থ হয়, তবে ইনস্টলেশন সমস্যা নিশ্চিত।
+       
         console.error("JWT-Decode Final Check Failed. Imported module:", jwtDecodeModule);
         throw new TypeError("decodeFunction is not a function. FINAL CHECK FAILED. Ensure 'jwt-decode' is installed.");
     }
@@ -41,36 +39,33 @@ const LoginPage = () => {
     const { logIn, googleSignIn } = useAuth();
     const navigate = useNavigate();
 
-    // Helper function to handle routing based on JWT role
     const handleRoleBasedRedirect = () => {
         const token = localStorage.getItem('access-token');
         
-        // If token is found, use role from JWT
         if (token) {
             try {
-                // Decode the JWT to get the user's role
+          
                 const decoded = jwtDecode(token);
                 const role = decoded?.role?.toLowerCase();
-                
-                // Navigate to the role-specific dashboard (e.g., /dashboard/student)
+          
                 if (role === 'student' || role === 'tutor' || role === 'admin') {
                     navigate(`/dashboard/${role}`, { replace: true }); 
                 } else {
                     navigate('/dashboard', { replace: true }); 
                 }
             } catch (err) {
-                // This catch handles invalid token decode errors
+               
                 console.error("JWT Decode Error (Fallback to Student):", err);
-                // Fallback: Default to student role if token is invalid or role missing
+           
                 navigate('/dashboard/student', { replace: true }); 
             }
         } else {
-            // Fallback: If token is still missing after wait, go to default student path.
+           
             navigate('/dashboard/student', { replace: true }); 
         }
     };
 
-    // 1. Email & Password Login (UPDATED)
+    //Email & Password Login (UPDATED)
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -79,10 +74,10 @@ const LoginPage = () => {
         try {
             await logIn(email, password); 
             
-            // --- FIX: Add a short delay to mitigate the race condition ---
+           
             setTimeout(() => { 
                 handleRoleBasedRedirect();
-            }, 500); // Wait 500ms to ensure JWT is saved in localStorage
+            }, 500); 
 
         } catch (err) {
             console.error(err);
@@ -92,22 +87,21 @@ const LoginPage = () => {
                 setError('Login failed. Please check your credentials.');
             }
         } finally {
-            // This setLoading(false) ensures the login button is re-enabled immediately after the promise resolves
+       
             setLoading(false); 
         }
     };
 
-    // 2. Google Social Login (UPDATED)
+    //Google Social Login 
     const handleGoogleSignIn = async () => {
         setError('');
         setLoading(true);
         try {
             await googleSignIn(); 
             
-            // --- FIX: Add a short delay to mitigate the race condition ---
             setTimeout(() => { 
                 handleRoleBasedRedirect();
-            }, 500); // Wait 500ms to ensure JWT is saved in localStorage
+            }, 500); 
 
         } catch (err) {
             console.error(err);

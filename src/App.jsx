@@ -1,9 +1,8 @@
-// src/App.jsx
+
 
 import { useState, useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 
-// Import Layouts
 import PublicLayout from './layouts/PublicLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 
@@ -16,22 +15,19 @@ import HomePage from './pages/HomePage';
 import TuitionDetails from './pages/TuitionDetails';
 import TutorsPage from './pages/TutorsPage';
 
-// Import Student Dashboard Pages
 import PostNewTuition from './pages/dashboard/PostNewTuition'; 
 import MyTuitions from './pages/dashboard/MyTuitions'; 
 import AppliedTutors from './pages/dashboard/AppliedTutors'; 
 
-// Import Tutor Dashboard Pages
 import MyApplications from './pages/dashboard/MyApplications';
 import OngoingTuitions from './pages/dashboard/OngoingTuitions';
 import RevenueHistory from './pages/dashboard/RevenueHistory';
 
-// Import Admin Dashboard Pages
 import UserManagement from './pages/dashboard/admin/UserManagement';
 import TuitionManagement from './pages/dashboard/admin/TuitionManagement';
 import AdminAnalytics from './pages/dashboard/admin/AdminAnalytics';
 
-// Shared Dashboard Pages
+
 import PaymentSuccess from './pages/dashboard/PaymentSuccess';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
@@ -132,7 +128,7 @@ const TutorDashboard = () => <div className="p-8"><h1 className="text-3xl font-b
 function App() {
   return (
     <Routes>
-      {/* 1. PUBLIC ROUTES */}
+      {/*  PUBLIC ROUTES */}
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<HomePage />} />
         <Route path="tuition/:id" element={<TuitionDetails />} />
@@ -144,7 +140,7 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
       </Route>
 
-      {/* 2. DASHBOARD ROUTES (Protected) */}
+      {/*  DASHBOARD ROUTES (Protected) */}
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route element={<ProtectedRoute />}>
             <Route index element={<DashboardPage />} /> 
