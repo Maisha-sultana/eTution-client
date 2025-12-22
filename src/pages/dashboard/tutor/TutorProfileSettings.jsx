@@ -1,11 +1,10 @@
-// src/pages/dashboard/tutor/TutorProfileSettings.jsx
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import Swal from 'sweetalert2';
 
 const TutorProfileSettings = () => {
-    const { user } = useAuth(); // বর্তমানে লগইন করা ইউজারের ডাটা
+    const { user } = useAuth(); 
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState({
         name: '',
@@ -22,8 +21,7 @@ const TutorProfileSettings = () => {
             fetch(`https://e-tution-server-nine.vercel.app/tutor-profile/${user.email}`)
                 .then(res => res.json())
                 .then(data => {
-                    // যদি ডাটাবেজে প্রোফাইল থাকে তবে তা সেট হবে, 
-                    // অন্যথায় লগইন করা ইউজারের ডিফল্ট ডাটা সেট হবে
+                  
                     setProfile({
                         name: data.name || user.displayName || '',
                         tutorEmail: user.email,

@@ -1,13 +1,12 @@
-// src/pages/dashboard/MyTuitions.jsx (NEW FILE)
+
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2'; 
 
-// Component to handle Edit Modal and Form
 const EditTuitionModal = ({ post, onUpdate, onClose }) => {
-    // Reusing the form structure but making it a controlled component for the modal
+   
     const [formData, setFormData] = useState(post);
     const [loading, setLoading] = useState(false);
     const apiUrl = 'https://e-tution-server-nine.vercel.app/tuition';
@@ -38,7 +37,7 @@ const EditTuitionModal = ({ post, onUpdate, onClose }) => {
 
             if (data.modifiedCount > 0) {
                 Swal.fire('Updated!', 'Your tuition post has been updated.', 'success');
-                onUpdate(); // Re-fetch data
+                onUpdate(); 
                 onClose(); // Close modal
             } else if (data.message.includes('not found')) {
                  Swal.fire('Error', data.message, 'error');
@@ -62,7 +61,7 @@ const EditTuitionModal = ({ post, onUpdate, onClose }) => {
                 <h3 className="font-bold text-2xl text-emerald-400 mb-6">Edit Tuition Post</h3>
                 <form onSubmit={handleUpdate}>
                     
-                    {/* Row 1: Subject and Class Level */}
+               
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <label className="form-control w-full">
                             <span className={labelClasses}>Subject *</span>
@@ -74,7 +73,7 @@ const EditTuitionModal = ({ post, onUpdate, onClose }) => {
                         </label>
                     </div>
 
-                    {/* Row 2: Location and Budget/Salary */}
+                    {/*  Location and Budget/Salary */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                          <label className="form-control w-full">
                             <span className={labelClasses}>Preferred Location *</span>
@@ -86,7 +85,7 @@ const EditTuitionModal = ({ post, onUpdate, onClose }) => {
                         </label>
                     </div>
                     
-                    {/* Row 3: Tuition Type and Contact Phone */}
+                    {/*  Tuition Type and Contact Phone */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <label className="form-control w-full">
                             <span className={labelClasses}>Tuition Type *</span>
@@ -101,7 +100,7 @@ const EditTuitionModal = ({ post, onUpdate, onClose }) => {
                         </label>
                     </div>
 
-                    {/* Row 4: Requirements */}
+                    {/* Requirements */}
                     <div className="mb-6">
                         <label className="form-control w-full">
                             <span className={labelClasses}>Specific Requirements</span>

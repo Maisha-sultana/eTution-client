@@ -1,4 +1,4 @@
-// src/pages/dashboard/AppliedTutors.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import Swal from 'sweetalert2';
@@ -8,7 +8,6 @@ const AppliedTutors = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // ১. স্টুডেন্টের ইমেইল অনুযায়ী আবেদন করা টিউটরদের তালিকা নিয়ে আসা
     const fetchApplications = async () => {
         try {
             const res = await fetch(`https://e-tution-server-nine.vercel.app/applied-tutors/${user.email}`);
@@ -25,7 +24,7 @@ const AppliedTutors = () => {
         if (user?.email) fetchApplications();
     }, [user]);
 
-    // ২. পেমেন্ট হ্যান্ডলার (Stripe Checkout Redirect)
+    
     const handleApproveAndPay = async (app) => {
         const paymentData = {
             applicationId: app._id,
@@ -35,7 +34,7 @@ const AppliedTutors = () => {
         };
 
         try {
-            // ব্যাকএন্ডে চেকআউট সেশন তৈরির রিকোয়েস্ট পাঠানো
+            
             const res = await fetch('https://e-tution-server-nine.vercel.app/create-checkout-session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -45,7 +44,7 @@ const AppliedTutors = () => {
             const data = await res.json();
 
             if (data.url) {
-                // সরাসরি স্ট্রাইপ পেমেন্ট পেজে রিডাইরেক্ট করা
+           
                 window.location.href = data.url; 
             } else {
                 Swal.fire('Error', 'Failed to initiate payment session.', 'error');
@@ -56,7 +55,6 @@ const AppliedTutors = () => {
         }
     };
 
-    // ৩. রিজেক্ট হ্যান্ডলার
     const handleReject = async (id) => {
         const res = await fetch(`https://e-tution-server-nine.vercel.app/application-reject/${id}`, { method: 'PATCH' });
         if (res.ok) {
@@ -84,7 +82,7 @@ const AppliedTutors = () => {
                     {applications.map(app => (
                         <div key={app._id} className="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl">
                             <div className="flex items-center gap-4 mb-4">
-                                {/* টিউটরের ছবি (যদি থাকে) বা ডিফল্ট ছবি */}
+                             
                                 <img 
                                     src={app.tutorPhoto || 'https://via.placeholder.com/150'} 
                                     className="w-16 h-16 rounded-full border-2 border-emerald-400" 
@@ -104,7 +102,7 @@ const AppliedTutors = () => {
                             </div>
 
                             <div className="flex gap-3">
-                                {/* Approve & Pay বাটনে ক্লিক করলে স্ট্রাইপ পেজে নিয়ে যাবে */}
+                               
                                 <button 
                                     onClick={() => handleApproveAndPay(app)}
                                     className="btn btn-sm bg-emerald-500 text-black flex-1 border-none font-bold"

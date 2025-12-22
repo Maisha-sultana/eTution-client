@@ -1,4 +1,4 @@
-// src/layouts/DashboardLayout.jsx
+
 
 import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
@@ -6,7 +6,7 @@ import Navbar from '../components/navbar';
 import { useAuth } from '../contexts/AuthContext';
 import * as jwtDecodeModule from 'jwt-decode'; 
 
-// JWT থেকে রোল বের করার জন্য হেল্পার ফাংশন
+
 const jwtDecode = (token) => {
     let decoder = null;
     if (typeof jwtDecodeModule.jwtDecode === 'function') {
@@ -23,7 +23,6 @@ const DashboardSidebar = ({ userRole }) => {
     let links = [];
     const basePath = `/dashboard/${userRole}`;
 
-    // রোল অনুযায়ী সাইডবার লিংক সেট করা
     if (userRole === 'student') {
         links = [
             { path: basePath, name: 'Overview', icon: 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z' },
@@ -81,7 +80,6 @@ const DashboardLayout = () => {
     const { user, loading } = useAuth();
     let userRole = 'student';
 
-    // লোকাল স্টোরেজ থেকে টোকেন নিয়ে রোল চেক করা
     const token = localStorage.getItem('access-token');
     if (token) {
         try {

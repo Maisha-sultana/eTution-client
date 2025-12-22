@@ -18,7 +18,6 @@ export const useAuth = () => {
     return useContext(AuthContext);
 };
 
-// --- Helper: Get JWT Token ---
 const getJwtToken = async (email) => {
     const response = await fetch('https://e-tution-server-nine.vercel.app/jwt', { 
         method: 'POST',
@@ -32,7 +31,6 @@ const getJwtToken = async (email) => {
     }
 };
 
-// --- Helper: Save User to DB (Role Based) ---
 const saveUserToDb = async (user, phone = null, role = 'Student') => {
     const userToSave = {
         email: user.email,
@@ -94,7 +92,7 @@ const AuthProvider = ({ children }) => {
         return result;
     };
 
-    // ৪. লগআউট
+    
     const logOut = () => {
         localStorage.removeItem('access-token');
         return signOut(auth);

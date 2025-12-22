@@ -35,7 +35,7 @@ const PostNewTuition = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 'Authorization': `Bearer ${token}` // Add token if you implement JWT auth middleware
+                
                 },
                 body: JSON.stringify(tuitionData),
             });
@@ -46,7 +46,7 @@ const PostNewTuition = () => {
                 Swal.fire({
                     icon: 'success',
                     title: 'Post Submitted!',
-                    text: data.message, // "Tuition post submitted successfully. It is currently pending admin review."
+                    text: data.message, 
                     confirmButtonColor: '#10B981',
                 });
                 form.reset();
@@ -84,7 +84,7 @@ const PostNewTuition = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            {/* Removed <Helmet> tag as requested */}
+         
             <h1 className="text-3xl lg:text-4xl font-extrabold mb-8 theme-accent-text border-b-2 border-emerald-400 pb-2">
                 Post New Tuition
             </h1>
@@ -96,7 +96,7 @@ const PostNewTuition = () => {
 
                 <form onSubmit={handleSubmit}>
                     
-                    {/* Row 1: Subject and Class Level */}
+                    {/*  Subject and Class Level */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <label className="form-control w-full">
                             <span className={labelClasses}>Subject <span className='text-red-500'>*</span></span>
@@ -108,7 +108,7 @@ const PostNewTuition = () => {
                         </label>
                     </div>
 
-                    {/* Row 2: Location and Budget/Salary */}
+                    {/*  Location and Budget/Salary */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                          <label className="form-control w-full">
                             <span className={labelClasses}>Preferred Location <span className='text-red-500'>*</span></span>
@@ -120,7 +120,7 @@ const PostNewTuition = () => {
                         </label>
                     </div>
                     
-                    {/* Row 3: Tuition Type and Contact Phone */}
+                    {/*  Tuition Type and Contact Phone */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <label className="form-control w-full">
                             <span className={labelClasses}>Tuition Type <span className='text-red-500'>*</span></span>
@@ -135,7 +135,7 @@ const PostNewTuition = () => {
                         </label>
                     </div>
 
-                    {/* Row 4: Requirements */}
+                    {/*  Requirements */}
                     <div className="mb-6">
                         <label className="form-control w-full">
                             <span className={labelClasses}>Specific Requirements</span>

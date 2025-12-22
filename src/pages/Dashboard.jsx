@@ -1,7 +1,7 @@
-// src/pages/Dashboard.jsx
+
 
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext'; // To display user info
+import { useAuth } from '../contexts/AuthContext'; 
 
 const Dashboard = () => {
     const { user } = useAuth();

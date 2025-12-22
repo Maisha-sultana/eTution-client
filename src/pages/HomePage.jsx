@@ -1,14 +1,11 @@
-// src/pages/HomePage.jsx
+
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-// AOS attributes are used below, assuming AOS is initialized in main.jsx
-
-// Component: Dot Pattern Background for visual interest in Hero Section
 const DotPattern = () => (
     <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-        {/* Simple dot pattern using background image */}
+     
         <div className="w-full h-full" style={{
             backgroundImage: `radial-gradient(#4a4a4a 1px, transparent 0)`,
             backgroundSize: `20px 20px`,
@@ -18,7 +15,6 @@ const DotPattern = () => (
 );
 
 
-// Component: Tuition Card
 const TuitionCard = ({ tuition }) => (
     <motion.div 
         className="p-6 bg-gray-800 rounded-xl shadow-2xl border-l-4 border-emerald-500/80 hover:border-emerald-400 transition duration-300 transform hover:scale-[1.02]"
@@ -72,7 +68,6 @@ const TutorCard = ({ tutor }) => (
     </motion.div>
 );
 
-// Component for How it Works Step
 const WorkStep = ({ number, title, description, icon }) => (
     <motion.div 
         className="text-center p-6 bg-gray-800 rounded-xl shadow-xl border border-gray-700/50 hover:border-emerald-400 transition duration-300 relative group"
@@ -80,8 +75,8 @@ const WorkStep = ({ number, title, description, icon }) => (
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        data-aos="fade-left" // AOS Effect
-        data-aos-delay={number * 100} // Stagger delay based on step number
+        data-aos="fade-left" 
+        data-aos-delay={number * 100} 
     >
         <div className="mx-auto w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-emerald-400/10 group-hover:bg-emerald-400 transition duration-300">
             {icon}
@@ -94,7 +89,6 @@ const WorkStep = ({ number, title, description, icon }) => (
     </motion.div>
 );
 
-// Component for Why Choose Us Feature
 const FeatureCard = ({ title, description, icon, delay }) => (
     <motion.div 
         className="p-6 bg-gray-800 rounded-xl shadow-lg border border-yellow-400/20 hover:border-yellow-400 transition duration-300 flex items-start space-x-4"
@@ -103,7 +97,7 @@ const FeatureCard = ({ title, description, icon, delay }) => (
         viewport={{ once: true, amount: 0.3 }}
         transition={{ type: "spring", stiffness: 100 }}
         data-aos="fade-up" // AOS Effect
-        data-aos-delay={delay} // Stagger delay
+        data-aos-delay={delay} 
     >
         <div className="w-8 h-8 flex-shrink-0 theme-secondary-text">
             {icon}
@@ -148,7 +142,7 @@ const HomePage = () => {
         fetchData('latest-tutors', setLatestTutors, setLoadingTutors, 'Could not load featured tutors.');
     }, []);
 
-    // Framer Motion variants for section headers 
+   
     const headerVariant = {
         hidden: { opacity: 0, y: -50 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
@@ -156,12 +150,12 @@ const HomePage = () => {
 
     return (
         <div className="theme-bg-dark theme-text-light">
-            {/* 1. Hero Section (Unique Floating Card Design) */}
+         
             <motion.header 
-                // UPDATED PADDING: Adjusted vertical padding
+              
                 className="relative overflow-hidden py-20 lg:py-24 text-center border-b border-emerald-400/50"
                 style={{ 
-                    // Enhanced Gradient for depth
+                 
                     background: `linear-gradient(145deg, #101827 0%, #0d121b 100%)` 
                 }}
                 initial={{ opacity: 0 }}
@@ -171,15 +165,14 @@ const HomePage = () => {
             >
                 <DotPattern />
                 
-                {/* FLOATING GLASS CARD EFFECT CONTAINER */}
                 <div 
                     className="relative max-w-5xl mx-auto px-4 z-10 p-10 md:p-14 rounded-xl 
                                 backdrop-blur-md bg-gray-900/40 border border-emerald-400/30 
-                                shadow-2xl shadow-gray-900/50" // UPDATED Floating Card Style
+                                shadow-2xl shadow-gray-900/50" 
                 >
                     
                     <motion.h1 
-                        className="text-5xl lg:text-7xl font-extrabold mb-3 leading-tight" // UPDATED mb-3
+                        className="text-5xl lg:text-7xl font-extrabold mb-3 leading-tight" 
                         variants={headerVariant}
                         initial="hidden"
                         animate="visible"
@@ -189,14 +182,14 @@ const HomePage = () => {
                     
                     {/* Subtle Accent Line Animation */}
                     <motion.div 
-                        className="w-1/4 h-1 mx-auto my-5 bg-emerald-400 rounded-full" // UPDATED my-5
+                        className="w-1/4 h-1 mx-auto my-5 bg-emerald-400 rounded-full" 
                         initial={{ width: 0 }}
                         animate={{ width: '25%' }}
                         transition={{ delay: 0.8, duration: 1.5 }}
                     ></motion.div>
 
                     <motion.p 
-                        className="text-lg lg:text-xl max-w-2xl mx-auto mb-8 text-gray-300" // UPDATED mb-8
+                        className="text-lg lg:text-xl max-w-2xl mx-auto mb-8 text-gray-300" 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
@@ -219,8 +212,8 @@ const HomePage = () => {
                 </div>
             </motion.header>
 
-            {/* 2. Dynamic Section: Latest Tuition Posts (6 data) */}
-            <section className="py-14 max-w-7xl mx-auto px-4"> {/* UPDATED: Increased top padding for separation */}
+            {/*  Latest Tuition Posts (6 data) */}
+            <section className="py-14 max-w-7xl mx-auto px-4"> 
                 <motion.h2 
                     className="text-4xl font-extrabold mb-10 text-center theme-accent-text"
                     variants={headerVariant}
@@ -257,7 +250,7 @@ const HomePage = () => {
                 </div>
             </section>
 
-            {/* 3. Dynamic Section: Featured Tutors (3 data) */}
+            {/* Featured Tutors (3 data) */}
             <section className="py-12 max-w-7xl mx-auto px-4 border-t border-gray-700/50">
                 <motion.h2 
                     className="text-4xl font-extrabold mb-12 text-center theme-secondary-text"
@@ -293,7 +286,6 @@ const HomePage = () => {
                 </div>
             </section>
             
-            {/* 4. How the Platform Works (3 steps visual grid) - AFTER Tutors */}
             <section className="py-16 max-w-7xl mx-auto px-4 border-t border-gray-700/50">
                 <motion.h2 
                     className="text-4xl font-extrabold mb-12 text-center text-gray-50"
@@ -346,7 +338,6 @@ const HomePage = () => {
                 </motion.div>
             </section>
 
-            {/* 5. Why Choose Us (features section) - AFTER How it Works */}
             <section className="py-14 max-w-7xl mx-auto px-4 border-t border-gray-700/50">
                 <motion.h2 
                     className="text-4xl font-extrabold mb-12 text-center theme-secondary-text"
