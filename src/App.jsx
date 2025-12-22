@@ -37,56 +37,73 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import TutorProfileSettings from './pages/dashboard/tutor/TutorProfileSettings';
 import StudentProfile from './pages/dashboard/student/StudentProfile';
-
+import ErrorPage from './pages/ErrorPage';
 const TuitionsPage = () => {
     const [tuitions, setTuitions] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [search, setSearch] = useState('');
+    const [filterClass, setFilterClass] = useState('');
+    const [sort, setSort] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalTuitions, setTotalTuitions] = useState(0);
+    const tuitionsPerPage = 6;
 
     useEffect(() => {
-        // Backend থেকে ডেটা ফেচ করা
-        fetch('https://e-tution-server-nine.vercel.app/all-tuitions')
+       
+        fetch(`https://e-tution-server-nine.vercel.app/all-tuitions?search=${search}&class=${filterClass}&sort=${sort}&page=${currentPage}&limit=${tuitionsPerPage}`)
         .then(res => res.json())
         .then(data => {
-            setTuitions(data);
-            setLoading(false);
-        })
-        .catch(err => {
-            console.error("Error:", err);
-            setLoading(false);
+            setTuitions(data.result || data);
+            setTotalTuitions(data.total || data.length);
         });
-    }, []);
+    }, [search, filterClass, sort, currentPage]);
 
-    if (loading) return (
-        <div className="flex justify-center py-20 theme-bg-dark min-h-screen">
-            <span className="loading loading-spinner loading-lg text-emerald-400"></span>
-        </div>
-    );
+    const totalPages = Math.ceil(totalTuitions / tuitionsPerPage);
 
     return (
         <div className="p-8 max-w-7xl mx-auto min-h-screen">
-            <h1 className="text-4xl font-extrabold mb-8 theme-accent-text border-b-2 border-emerald-400 pb-2 inline-block">
-                All Tuitions Listings
-            </h1>
-           
-            {tuitions.length === 0 ? (
-                <p className="text-gray-400 text-center py-10">No tuition posts available.</p>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {tuitions.map((tuition) => (
-                        <div key={tuition._id} className="p-6 bg-gray-800 rounded-xl shadow-2xl border-l-4 border-emerald-500/80 hover:border-emerald-400 transition duration-300">
-                            <h3 className="text-xl font-bold theme-accent-text mb-2">{tuition.subject}</h3>
-                            <p className="text-sm text-gray-400 mb-3">{tuition.classLevel} | {tuition.location}</p>
-                            <div className="space-y-1 mb-4">
-                                <p className="text-gray-300 text-sm"><span className="font-semibold">Salary:</span> {tuition.salary}</p>
-                                <p className="text-gray-300 text-sm"><span className="font-semibold">Type:</span> {tuition.type}</p>
-                            </div>
-                            <Link to={`/tuition/${tuition._id}`} className="btn btn-sm bg-yellow-400 text-gray-900 hover:bg-yellow-500 border-none">
-                                View Details
-                            </Link>
-                        </div>
-                    ))}
-                </div>
-            )}
+            <h1 className="text-4xl font-bold mb-8 theme-accent-text">All Tuitions</h1>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+               <input 
+    type="text" 
+    placeholder="Search Subject..." 
+    className="input input-bordered bg-gray-700 text-white" 
+    onChange={(e) => {
+        setSearch(e.target.value);
+        setCurrentPage(1);
+    }} 
+/>
+              
+                <select className="select select-bordered bg-gray-700 text-white" onChange={(e) => setSort(e.target.value)}>
+                    <option value="">Sort By Price</option>
+                    <option value="salaryLow">Low to High</option>
+                    <option value="salaryHigh">High to Low</option>
+                </select>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {tuitions.map(t => (
+                    <div key={t._id} className="card bg-gray-800 p-6 border-l-4 border-emerald-500 shadow-xl">
+                        <h3 className="text-xl font-bold text-white">{t.subject}</h3>
+                        <p className="text-gray-400">{t.classLevel} | {t.location}</p>
+                        <p className="text-emerald-400 font-bold mt-2">{t.salary} BDT</p>
+                        <Link to={`/tuition/${t._id}`} className="btn btn-sm mt-4 bg-yellow-400 border-none text-gray-900 font-bold">Details</Link>
+                    </div>
+                ))}
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="flex justify-center mt-12 join">
+                {[...Array(totalPages).keys()].map(page => (
+                    <button 
+                        key={page} 
+                        onClick={() => setCurrentPage(page + 1)}
+                        className={`join-item btn ${currentPage === page + 1 ? 'btn-active bg-emerald-500 border-none text-black' : 'bg-gray-700 text-white'}`}
+                    >
+                        {page + 1}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 };
@@ -143,7 +160,7 @@ function App() {
       </Route>
       
       {/* 404 Route */}
-      <Route path="*" element={<div className="p-8 theme-bg-dark text-white min-h-screen"><h1>404 Not Found</h1></div>} />
+    <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }

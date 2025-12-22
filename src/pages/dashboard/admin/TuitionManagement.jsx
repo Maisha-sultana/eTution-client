@@ -11,18 +11,17 @@ const TuitionManagement = () => {
     };
 
     useEffect(() => { fetchTuitions(); }, []);
-
-    const handleStatus = async (id, status) => {
-        const res = await fetch(`https://e-tution-server-nine.vercel.app/admin/tuition-status/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status })
-        });
-        if (res.ok) {
-            Swal.fire(status, `Post has been ${status.toLowerCase()}.`, 'success');
-            fetchTuitions();
-        }
-    };
+const handleStatusUpdate = async (id, newStatus) => {
+    const res = await fetch(`https://e-tution-server-nine.vercel.app/admin/tuition-status/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+    });
+    if (res.ok) {
+        Swal.fire('Success', `Tuition is now ${newStatus}`, 'success');
+        fetchTuitions(); // Refresh list
+    }
+};
 
     return (
         <div className="p-4">
@@ -48,9 +47,9 @@ const TuitionManagement = () => {
                                     </span>
                                 </td>
                                 <td className="flex gap-2">
-                                    <button onClick={() => handleStatus(t._id, 'Approved')} className="btn btn-xs btn-success">Approve</button>
-                                    <button onClick={() => handleStatus(t._id, 'Rejected')} className="btn btn-xs btn-error">Reject</button>
-                                </td>
+                                   <button onClick={() => handleStatusUpdate(t._id, 'Approved')} className="btn btn-xs btn-success">Approve</button>
+                           <button onClick={() => handleStatusUpdate(t._id, 'Rejected')} className="btn btn-xs btn-error">Reject</button>
+</td>
                             </tr>
                         ))}
                     </tbody>

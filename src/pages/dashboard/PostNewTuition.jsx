@@ -1,12 +1,11 @@
-// src/pages/dashboard/PostNewTuition.jsx
 
 import React, { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext'; // CORRECTED PATH to AuthContext
+import { useAuth } from '../../contexts/AuthContext'; 
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2'; // Assuming sweetalert2 is installed
 
 const PostNewTuition = () => {
-    // Assuming useAuth gives user info including email
+   
     const { user } = useAuth(); 
     const [loading, setLoading] = useState(false);
 
@@ -17,8 +16,8 @@ const PostNewTuition = () => {
         const form = e.target;
         
         const tuitionData = {
-            studentEmail: user?.email, // Mandatory: Student's email from context
-            studentName: user?.displayName, // Optional: Student's name
+            studentEmail: user?.email,
+            studentName: user?.displayName,
             subject: form.subject.value,
             classLevel: form.classLevel.value,
             location: form.location.value,
@@ -26,10 +25,12 @@ const PostNewTuition = () => {
             requirements: form.requirements.value,
             type: form.type.value,
             contactPhone: form.contactPhone.value,
+            status: 'Pending', // 
+    createdAt: new Date(),
         };
 
         try {
-            // Ensure the backend route /tuition exists in index.js
+         
             const response = await fetch('https://e-tution-server-nine.vercel.app/tuition', {
                 method: 'POST',
                 headers: {
