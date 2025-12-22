@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext'; 
 import { motion } from 'framer-motion';
-import Swal from 'sweetalert2'; // Assuming sweetalert2 is installed
+import Swal from 'sweetalert2'; 
 
 const PostNewTuition = () => {
    

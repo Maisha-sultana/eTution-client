@@ -42,20 +42,21 @@ const TuitionsPage = () => {
     const [tuitions, setTuitions] = useState([]);
     const [search, setSearch] = useState('');
     const [filterClass, setFilterClass] = useState('');
+    const [filterLocation, setFilterLocation] = useState('');
     const [sort, setSort] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalTuitions, setTotalTuitions] = useState(0);
     const tuitionsPerPage = 6;
 
     useEffect(() => {
-       
-        fetch(`https://e-tution-server-nine.vercel.app/all-tuitions?search=${search}&class=${filterClass}&sort=${sort}&page=${currentPage}&limit=${tuitionsPerPage}`)
+        // Fetch with search, filter, sort and pagination
+        fetch(`https://e-tution-server-nine.vercel.app/all-tuitions?search=${search}&class=${filterClass}&location=${filterLocation}&sort=${sort}&page=${currentPage}&limit=${tuitionsPerPage}`)
         .then(res => res.json())
         .then(data => {
-            setTuitions(data.result || data);
-            setTotalTuitions(data.total || data.length);
+            setTuitions(data.result || []);
+            setTotalTuitions(data.total || 0);
         });
-    }, [search, filterClass, sort, currentPage]);
+    }, [search, filterClass, filterLocation, sort, currentPage]);
 
     const totalPages = Math.ceil(totalTuitions / tuitionsPerPage);
 
@@ -63,17 +64,29 @@ const TuitionsPage = () => {
         <div className="p-8 max-w-7xl mx-auto min-h-screen">
             <h1 className="text-4xl font-bold mb-8 theme-accent-text">All Tuitions</h1>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-               <input 
-    type="text" 
-    placeholder="Search Subject..." 
-    className="input input-bordered bg-gray-700 text-white" 
-    onChange={(e) => {
-        setSearch(e.target.value);
-        setCurrentPage(1);
-    }} 
-/>
-              
+            {/* Search & Advanced Filters */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <input 
+                    type="text" 
+                    placeholder="Search Subject..." 
+                    className="input input-bordered bg-gray-700 text-white" 
+                    onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }} 
+                />
+                <input 
+                    type="text" 
+                    placeholder="Filter Location..." 
+                    className="input input-bordered bg-gray-700 text-white" 
+                    onChange={(e) => { setFilterLocation(e.target.value); setCurrentPage(1); }} 
+                />
+               <select 
+        className="select select-bordered bg-gray-700 text-white" 
+        onChange={(e) => { setFilterClass(e.target.value); setCurrentPage(1); }}
+    >
+        <option value="">All Classes</option>
+        <option value="Class 9">Class 9</option>
+        <option value="Class 10">Class 10</option>
+        <option value="HSC">HSC</option>
+    </select>
                 <select className="select select-bordered bg-gray-700 text-white" onChange={(e) => setSort(e.target.value)}>
                     <option value="">Sort By Price</option>
                     <option value="salaryLow">Low to High</option>
@@ -81,6 +94,7 @@ const TuitionsPage = () => {
                 </select>
             </div>
 
+            {/* Tuition Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {tuitions.map(t => (
                     <div key={t._id} className="card bg-gray-800 p-6 border-l-4 border-emerald-500 shadow-xl">
@@ -93,21 +107,22 @@ const TuitionsPage = () => {
             </div>
 
             {/* Pagination Controls */}
-            <div className="flex justify-center mt-12 join">
-                {[...Array(totalPages).keys()].map(page => (
-                    <button 
-                        key={page} 
-                        onClick={() => setCurrentPage(page + 1)}
-                        className={`join-item btn ${currentPage === page + 1 ? 'btn-active bg-emerald-500 border-none text-black' : 'bg-gray-700 text-white'}`}
-                    >
-                        {page + 1}
-                    </button>
-                ))}
-            </div>
+            {totalPages > 1 && (
+                <div className="flex justify-center mt-12 join">
+                    {[...Array(totalPages).keys()].map(page => (
+                        <button 
+                            key={page} 
+                            onClick={() => setCurrentPage(page + 1)}
+                            className={`join-item btn ${currentPage === page + 1 ? 'btn-active bg-emerald-500' : 'bg-gray-700 text-white'}`}
+                        >
+                            {page + 1}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
-
 const ProfileSettings = () => <div className="p-8"><h1 className="text-3xl font-bold mb-4 theme-accent-text">Profile Settings</h1></div>;
 
 // Dashboard Overview Components
