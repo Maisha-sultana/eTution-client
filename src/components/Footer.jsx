@@ -1,12 +1,9 @@
-// src/components/Footer.jsx
 
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-// --- Branding from Navbar ---
 const websiteName = "SikkhaHub"; 
 
-// Abstract, professional logo icon (Copied from Navbar)
 const AbstractIcon = () => (
     <svg 
         xmlns="http://www.w3.org/2000/svg" 
@@ -14,7 +11,7 @@ const AbstractIcon = () => (
         viewBox="0 0 24 24" 
         strokeWidth={1.5} 
         stroke="currentColor" 
-        className="w-7 h-7 mr-1 theme-accent-text" // Using global accent class
+        className="w-7 h-7 mr-1 theme-accent-text" 
     >
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 12h16.5m-16.5 0a2.25 2.25 0 002.25 2.25h12.75M3.75 12a2.25 2.25 0 012.25-2.25h12.75M16.5 7.5l2.25 4.5m-2.25-4.5l-2.25 4.5m4.5-4.5v9" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12L21 7.5M16.5 12L21 16.5" />
@@ -22,20 +19,17 @@ const AbstractIcon = () => (
 );
 
 const Footer = () => {
-  // Common classes for interactive elements
+
   const linkClasses = "link link-hover transition-colors duration-200 hover:text-emerald-400";
   const iconClasses = "theme-accent-text hover:text-yellow-400 transition-colors duration-200";
 
   return (
-    // Outer footer container for full-width dark background
-    // MODIFIED: Reduced pt-8 to pt-6, pb-2 to pb-0 (padding is now mostly in inner divs)
+   
     <footer className="theme-bg-dark border-t border-emerald-400/20 pt-6 pb-0">
       
-      {/* --- Main Footer Content Container (Centered Content) --- */}
-      {/* MODIFIED: Reduced gap-6 to gap-4, changed p-4 to px-4 py-3 for less vertical space */}
       <div className="max-w-7xl mx-auto px-4 py-3 theme-text-light text-center md:text-left grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
         
-        {/* 1. Logo & About Platform */}
+        {/* Logo & About Platform */}
         <div className="col-span-2 md:col-span-1 mx-auto md:mx-0">
           {/* Reduced mb-2 to mb-1 */}
           <Link to="/" className="flex items-center justify-center md:justify-start mb-1">
@@ -45,14 +39,12 @@ const Footer = () => {
               <span className="text-gray-50">{websiteName.slice(4)}</span>
             </span>
           </Link>
-          {/* Reduced text size slightly to reduce line height */}
+       
           <p className="max-w-xs text-xs"> 
             SikkhaHub is the complete platform designed to connect qualified tutors with verified tuition needs, enabling digital tracking and transparent payments.
           </p>
         </div>
 
-        {/* 2. Quick Links - Centered/Aligned */}
-        {/* Reduced gap-1 to gap-0.5 (by using smaller vertical padding on links) */}
         <nav className="flex flex-col gap-0 items-center md:items-start">
           <header className="theme-accent-text font-bold text-base mb-1">Quick Links</header>
           <Link to="/" className={linkClasses + " text-sm py-0"}>Home</Link>
@@ -62,8 +54,6 @@ const Footer = () => {
           <Link to="/dashboard" className={linkClasses + " text-sm py-0"}>Dashboard</Link>
         </nav>
         
-        {/* 3. Contact Information - Centered/Aligned */}
-        {/* Reduced gap-1 to gap-0.5 */}
         <nav className="flex flex-col gap-0 items-center md:items-start">
           <header className="theme-accent-text font-bold text-base mb-1">Contact</header>
           <a href="mailto:support@sikshahub.com" className={linkClasses + " text-sm py-0"}>Email: support@sikshahub.com</a>
@@ -71,7 +61,6 @@ const Footer = () => {
           <p className="text-sm">Address: Dhaka, Bangladesh</p>
         </nav>
 
-        {/* 4. Social Media Icons - Centered/Aligned */}
         <nav className="flex flex-col gap-0 items-center md:items-start">
             <header className="theme-accent-text font-bold text-base mb-1">Connect</header>
             <div className="grid grid-flow-col gap-3">
@@ -97,8 +86,6 @@ const Footer = () => {
         </nav>
       </div>
 
-      {/* --- Copyright Section Container (Centered) --- */}
-      {/* MODIFIED: Reduced mt-3 to mt-2, pt-3 to pt-2, px-4 py-2 for bottom padding */}
       <div className="max-w-7xl mx-auto px-4 py-2 border-t border-gray-700/50 mt-2 pt-2 theme-text-light text-center">
         <p className="text-xs">Copyright © {new Date().getFullYear()} - All right reserved by {websiteName} LTD.</p>
       </div>
