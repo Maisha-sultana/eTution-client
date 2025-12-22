@@ -5,9 +5,12 @@ const RevenueHistory = () => {
     const [payments, setPayments] = useState([]);
 
     useEffect(() => {
-        fetch(`https://e-tution-server-nine.vercel.app/tutor/revenue/${user.email}`)
-            .then(res => res.json())
-            .then(data => setPayments(data));
+     if (user?.email) {
+            fetch(`https://e-tution-server-nine.vercel.app/tutor/revenue/${user.email}`)
+                .then(res => res.json())
+                .then(data => setPayments(data))
+                .catch(err => console.error("Error:", err));
+        }
     }, [user.email]);
 
     const totalRevenue = payments.reduce((sum, p) => sum + p.amount, 0);

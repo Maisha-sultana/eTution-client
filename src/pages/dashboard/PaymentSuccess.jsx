@@ -1,4 +1,4 @@
-// src/pages/dashboard/PaymentSuccess.jsx
+
 import { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
