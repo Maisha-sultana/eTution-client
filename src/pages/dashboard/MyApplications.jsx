@@ -35,7 +35,13 @@ const MyApplications = () => {
                             <tr key={a._id}>
                                 <td>{a.subject}</td>
                                 <td>{a.expectedSalary} BDT</td>
-                                <td><span className={`badge ${a.status === 'Pending' ? 'badge-warning' : 'badge-success'}`}>{a.status}</span></td>
+                                <td><span className={`badge ${
+        a.status === 'Pending' ? 'badge-warning' : 
+        a.status === 'Approved' ? 'badge-success' : 
+        'badge-error' 
+    }`}>
+        {a.status}
+    </span></td>
                                 <td>
                                     {a.status === 'Pending' && <button onClick={() => handleCancel(a._id)} className="btn btn-xs btn-error">Cancel</button>}
                                 </td>

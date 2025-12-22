@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
@@ -7,9 +7,12 @@ const PaymentSuccess = () => {
     const [searchParams] = useSearchParams();
     const sessionId = searchParams.get('session_id');
     const navigate = useNavigate();
+    const calledRegistry = useRef(false);
 
     useEffect(() => {
-        if (sessionId) {
+       if (sessionId && !calledRegistry.current) {
+            calledRegistry.current = true; 
+            
             fetch(`https://e-tution-server-nine.vercel.app/payment-verify?session_id=${sessionId}`, {
                 method: 'PATCH'
             })
